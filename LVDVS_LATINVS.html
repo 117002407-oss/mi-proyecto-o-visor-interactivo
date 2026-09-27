@@ -1,0 +1,2320 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>LVDVS LATINVS: Iūs et Lingva</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  if (window.tailwind) {
+    tailwind.config = {
+      corePlugins: { preflight: false },
+      theme: { extend: { colors: { porphyry: '#800020', marble: '#FDFBF7', gold: '#D4AF37' } } }
+    };
+  }
+</script>
+<style>
+  :root {
+    color-scheme: light;
+    --porphyry: #800020;
+    --porphyry-700: #650019;
+    --porphyry-900: #3f0010;
+    --porphyry-50: #f8ecef;
+    --marble: #FDFBF7;
+    --marble-2: #F5EFE6;
+    --marble-3: #EAE1D4;
+    --gold: #D4AF37;
+    --gold-700: #8E7219;
+    --gold-50: #FBF4DC;
+    --ink: #2A1A1F;
+    --ink-2: #55434A;
+    --muted: #76646A;
+    --line: #E6DBCD;
+    --ok: #22c55e;
+    --ok-700: #15803d;
+    --ok-900: #052e16;
+    --ok-50: #e9fbef;
+    --err: #ef4444;
+    --err-700: #b91c1c;
+    --err-50: #fdecec;
+    --amber: #d97706;
+    --amber-700: #92400e;
+    --amber-50: #fef6e4;
+    --pc0: #800020;
+    --pc1: #8E7219;
+    --pc2: #2F4A6D;
+    --pc3: #7A4B2A;
+    --serif: "Palatino Linotype", "Book Antiqua", Palatino, "URW Palladio L", "P052", Georgia, "Times New Roman", serif;
+    --sans: system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans", "Helvetica Neue", Arial, sans-serif;
+    --header-h: 112px;
+    --footer-h: 0px;
+  }
+  [hidden] { display: none !important; }
+  *, *::before, *::after { box-sizing: border-box; }
+  h1, h2, h3, p, ol, ul, figure { margin: 0; }
+  button, input { font: inherit; color: inherit; }
+  button { -webkit-tap-highlight-color: transparent; }
+  .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+  .min-w-0 { min-width: 0; }
+  html, body { min-height: 100%; }
+  body {
+    margin: 0;
+    background-color: var(--marble);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='640' height='640'%3E%3Cfilter id='m'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.003 0.011' numOctaves='5' seed='14'/%3E%3CfeColorMatrix values='0 0 0 0 0.42 0 0 0 0 0.30 0 0 0 0 0.30 1.6 0 0 0 -0.62'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23m)' opacity='0.10'/%3E%3C/svg%3E");
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: 16px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+  .la { font-family: var(--serif); }
+  .skip { position: absolute; left: -999px; top: 0; }
+  .skip:focus { left: 16px; top: 16px; z-index: 100; background: #fff; padding: .5rem 1rem; border-radius: 8px; }
+  :focus-visible { outline: 3px solid var(--gold); outline-offset: 2px; border-radius: 10px; }
+
+  /* ---------- Header ---------- */
+  #topbar {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 40;
+    padding-top: env(safe-area-inset-top, 0px);
+    background: rgba(253, 251, 247, .94);
+    backdrop-filter: saturate(1.2) blur(8px);
+    -webkit-backdrop-filter: saturate(1.2) blur(8px);
+    border-bottom: 1px solid var(--line);
+  }
+  .topbar-inner {
+    max-width: 72rem; margin: 0 auto; padding: .6rem 16px .55rem;
+    display: grid; grid-template-columns: auto 1fr; grid-template-areas: "brand stats" "prog prog";
+    align-items: center; gap: .45rem .75rem;
+  }
+  @media (min-width: 820px) {
+    .topbar-inner { grid-template-columns: auto minmax(0, 1fr) auto; grid-template-areas: "brand prog stats"; gap: 1.25rem; padding-block: .75rem; }
+  }
+  .brand { grid-area: brand; display: flex; align-items: center; gap: .55rem; color: var(--porphyry); background: none; border: 0; cursor: pointer; padding: 0; }
+  .brand svg { width: 30px; height: 30px; flex: none; }
+  .wordmark { font-family: var(--serif); font-weight: 700; letter-spacing: .16em; font-size: 1.02rem; color: var(--porphyry); display: none; }
+  .wordmark .ip { color: var(--gold-700); padding: 0 .05em; }
+  @media (min-width: 480px) { .wordmark { display: inline; } }
+  .progress-wrap { grid-area: prog; min-width: 0; }
+  .progress-track { height: 14px; background: var(--marble-3); border-radius: 999px; overflow: hidden; position: relative; box-shadow: inset 0 1px 2px rgba(42, 26, 31, .12); }
+  .progress-fill {
+    height: 100%; width: 0; border-radius: 999px;
+    background: linear-gradient(90deg, var(--porphyry) 0%, #a3143a 60%, var(--gold) 100%);
+    transition: width .6s cubic-bezier(.22, 1, .36, 1);
+    position: relative;
+  }
+  .progress-fill::after { content: ""; position: absolute; left: 8px; right: 8px; top: 3px; height: 3px; border-radius: 999px; background: rgba(255, 255, 255, .35); }
+  .progress-meta { display: flex; align-items: center; justify-content: space-between; gap: .5rem; margin-top: .35rem; font-size: .78rem; color: var(--muted); font-variant-numeric: tabular-nums; }
+  .progress-meta #progressLabel { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
+  .rank-chip { display: inline-flex; align-items: center; gap: .3rem; flex: none; padding: .12rem .55rem .12rem .4rem; border-radius: 999px; background: var(--porphyry); color: var(--gold-50); font-family: var(--serif); font-size: .82rem; font-weight: 700; letter-spacing: .02em; }
+  .rank-chip svg { width: 16px; height: 16px; color: var(--gold); }
+  .stats { grid-area: stats; justify-self: end; display: flex; align-items: center; gap: .35rem; position: relative; }
+  .chip { display: inline-flex; align-items: center; gap: .25rem; padding: .28rem .5rem; border-radius: 999px; font-weight: 800; font-size: .92rem; font-variant-numeric: tabular-nums; background: #fff; border: 1px solid var(--line); position: relative; }
+  .chip svg { width: 18px; height: 18px; }
+  .chip small { font-size: .66rem; font-weight: 800; color: var(--gold-700); letter-spacing: .05em; }
+  .chip-streak { color: var(--muted); }
+  .chip-streak.is-hot { color: #b4380f; border-color: #f3c9a8; background: #fff6ee; }
+  .chip-streak.is-hot svg { animation: flicker 1.2s ease-in-out infinite; }
+  .chip-xp { color: var(--ink); }
+  .xp-float { position: absolute; right: 4px; top: 100%; font-size: .8rem; font-weight: 800; color: var(--gold-700); pointer-events: none; opacity: 0; }
+  .xp-float.go { animation: floatUp 1.1s ease-out forwards; }
+  .hearts { display: inline-flex; gap: 1px; background: none; border: 0; padding: .2rem; cursor: pointer; border-radius: 10px; }
+  .hearts svg { width: 19px; height: 19px; transition: transform .2s; }
+  .hearts:hover svg.full { transform: scale(1.12); }
+  .hearts svg.full { color: var(--porphyry); }
+  .hearts svg.empty { color: var(--marble-3); }
+  .hearts svg.breaking { animation: heartBreak .7s ease-out; }
+  .icon-btn { width: 34px; height: 34px; display: grid; place-items: center; border-radius: 10px; background: none; border: 1px solid transparent; color: var(--muted); cursor: pointer; }
+  .icon-btn:hover { background: var(--marble-2); border-color: var(--line); }
+  .icon-btn svg { width: 20px; height: 20px; }
+  .pop { position: absolute; right: 0; top: calc(100% + 10px); width: min(300px, calc(100vw - 32px)); background: #fff; border: 1px solid var(--line); border-radius: 14px; padding: .85rem 1rem; box-shadow: 0 12px 30px rgba(42, 26, 31, .14); font-size: .88rem; color: var(--ink-2); z-index: 50; }
+  .pop strong { color: var(--porphyry); font-family: var(--serif); }
+  .meander {
+    height: 8px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='8'%3E%3Cpath d='M0 7H14V1H4V5H10V3H7M14 7H20' fill='none' stroke='%23D4AF37' stroke-width='1.2'/%3E%3C/svg%3E");
+    background-repeat: repeat-x; opacity: .85;
+  }
+
+  /* ---------- Layout ---------- */
+  #screen { display: block; padding-top: calc(var(--header-h) + 22px); padding-bottom: calc(var(--footer-h) + 36px); outline: none; }
+  body.kb-on #screen { padding-bottom: calc(var(--footer-h) + 110px); }
+  .wrap { max-width: 72rem; margin: 0 auto; padding-inline: 16px; }
+  .narrow { max-width: 44rem; }
+  .card { background: #fff; border: 1px solid var(--line); border-radius: 18px; }
+  .eyebrow { text-transform: uppercase; letter-spacing: .14em; font-size: .72rem; font-weight: 700; color: var(--gold-700); }
+  .display { font-family: var(--serif); font-weight: 700; color: var(--porphyry); letter-spacing: .01em; text-wrap: balance; line-height: 1.1; }
+  .muted { color: var(--muted); }
+
+  /* ---------- Map ---------- */
+  .hero { padding-block: .5rem 1.5rem; max-width: 46rem; }
+  .hero h1 { font-size: clamp(2.2rem, 6vw, 3.4rem); margin: .35rem 0 .6rem; }
+  .hero .lede { color: var(--ink-2); font-size: 1.05rem; max-width: 62ch; }
+  .map-grid { display: grid; gap: 1.5rem; }
+  @media (min-width: 900px) { .map-grid { grid-template-columns: minmax(0, 1fr) 20rem; align-items: start; } }
+  .path { list-style: none; margin: 0; padding: 0; position: relative; display: grid; gap: 1.1rem; }
+  .path::before { content: ""; position: absolute; left: 31px; top: 36px; bottom: 36px; width: 4px; border-radius: 4px; background: repeating-linear-gradient(to bottom, var(--gold) 0 10px, transparent 10px 18px); opacity: .7; }
+  .node { display: grid; grid-template-columns: 66px minmax(0, 1fr); gap: .9rem; align-items: start; position: relative; }
+  .medallion {
+    width: 66px; height: 66px; border-radius: 50%; display: grid; place-items: center;
+    font-family: var(--serif); font-weight: 700; font-size: 1.45rem; letter-spacing: .04em;
+    background: radial-gradient(circle at 35% 30%, #a3143a, var(--porphyry) 60%, var(--porphyry-900));
+    color: var(--gold-50); border: 3px solid var(--gold); box-shadow: 0 4px 0 var(--porphyry-900), 0 8px 18px rgba(128, 0, 32, .22);
+    position: relative; z-index: 1;
+  }
+  .node-perfectum .medallion { background: radial-gradient(circle at 35% 30%, #f3dc84, var(--gold) 55%, var(--gold-700)); color: var(--porphyry-900); border-color: var(--porphyry); box-shadow: 0 4px 0 var(--gold-700), 0 8px 18px rgba(142, 114, 25, .25); }
+  .node-clausum .medallion { background: var(--marble-3); color: var(--muted); border-color: #d6cab9; box-shadow: 0 4px 0 #cfc2b0; }
+  .node-card { padding: 1rem 1.1rem; }
+  .node-kicker { font-size: .74rem; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); font-weight: 700; }
+  .node-title { font-size: 1.3rem; font-weight: 700; color: var(--ink); margin: .15rem 0 .25rem; text-wrap: balance; }
+  .node-focus { color: var(--ink-2); font-size: .93rem; }
+  .node-foot { display: flex; flex-wrap: wrap; align-items: center; gap: .5rem .9rem; margin-top: .8rem; }
+  .status { display: inline-flex; align-items: center; gap: .3rem; font-size: .78rem; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; padding: .2rem .55rem; border-radius: 999px; }
+  .status svg { width: 14px; height: 14px; }
+  .status-perfectum { background: var(--gold-50); color: var(--gold-700); }
+  .status-apertum { background: var(--porphyry-50); color: var(--porphyry); }
+  .status-clausum { background: var(--marble-2); color: var(--muted); }
+  .node-foot .best { font-size: .82rem; color: var(--muted); font-variant-numeric: tabular-nums; }
+  .node-foot .btn { margin-left: auto; }
+  .side { display: grid; gap: 1rem; }
+  .side .card { padding: 1.1rem 1.15rem; }
+  .side h2 { font-family: var(--serif); font-size: 1.2rem; font-weight: 700; color: var(--porphyry); margin: .2rem 0 .6rem; }
+  .rank-now { display: flex; align-items: center; gap: .7rem; }
+  .rank-now svg { width: 46px; height: 46px; color: var(--gold); flex: none; }
+  .rank-now .name { font-family: var(--serif); font-size: 1.35rem; font-weight: 700; color: var(--ink); line-height: 1.15; }
+  .rank-now .xp { font-size: .85rem; color: var(--muted); font-variant-numeric: tabular-nums; }
+  .mini-track { height: 8px; background: var(--marble-3); border-radius: 999px; overflow: hidden; margin: .75rem 0 .35rem; }
+  .mini-track > div { height: 100%; background: var(--gold); border-radius: 999px; transition: width .6s; }
+  .ranks { list-style: none; padding: 0; margin: .8rem 0 0; display: grid; gap: .3rem; font-size: .88rem; }
+  .ranks li { display: flex; justify-content: space-between; gap: .5rem; padding: .3rem .5rem; border-radius: 8px; color: var(--muted); font-variant-numeric: tabular-nums; }
+  .ranks li .la { font-weight: 700; }
+  .ranks li > span:last-child { white-space: nowrap; }
+  .ranks li.reached { color: var(--ink-2); }
+  .ranks li.current { background: var(--porphyry-50); color: var(--porphyry); }
+  .rules { list-style: none; padding: 0; margin: 0; display: grid; gap: .65rem; font-size: .9rem; color: var(--ink-2); }
+  .rules li { display: grid; grid-template-columns: 22px minmax(0, 1fr); gap: .55rem; align-items: start; }
+  .rules svg { width: 20px; height: 20px; margin-top: 1px; }
+  .link-btn { background: none; border: 0; color: var(--muted); font-size: .82rem; text-decoration: underline; text-underline-offset: 3px; cursor: pointer; padding: .25rem 0; }
+  .link-btn.armed { color: var(--err-700); font-weight: 700; }
+
+  /* ---------- Buttons ---------- */
+  .btn {
+    --shadow: var(--porphyry-900);
+    display: inline-flex; align-items: center; justify-content: center; gap: .5rem;
+    font-weight: 800; letter-spacing: .06em; text-transform: uppercase; font-size: .9rem;
+    border-radius: 14px; padding: .85rem 1.25rem; border: 0; cursor: pointer;
+    box-shadow: 0 4px 0 var(--shadow); transition: transform .08s, box-shadow .08s, background-color .2s, filter .15s;
+    background: #fff; color: var(--ink);
+  }
+  .btn:hover:not(:disabled) { filter: brightness(1.06); }
+  .btn:active:not(:disabled) { transform: translateY(3px); box-shadow: 0 1px 0 var(--shadow); }
+  .btn:disabled { background: var(--marble-3); color: var(--muted); --shadow: #d3c6b4; cursor: not-allowed; }
+  .btn-primary { background: var(--porphyry); color: #fff; --shadow: var(--porphyry-900); }
+  .btn-gold { background: var(--gold); color: var(--porphyry-900); --shadow: var(--gold-700); }
+  .btn-ghost { background: #fff; color: var(--porphyry); --shadow: var(--line); border: 2px solid var(--line); }
+  .btn-sm { padding: .55rem .9rem; font-size: .78rem; border-radius: 12px; }
+  .btn-correct { background: var(--ok); color: var(--ok-900); --shadow: var(--ok-700); }
+  .btn-near { background: var(--amber); color: #fff; --shadow: var(--amber-700); }
+  .btn-wrong { background: var(--err); color: #fff; --shadow: var(--err-700); }
+
+  /* ---------- Lesson ---------- */
+  .lesson-grid { display: grid; gap: 1.1rem; }
+  @media (min-width: 768px) {
+    .lesson-grid { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); align-items: start; gap: 1.5rem; }
+    .lectio { position: sticky; top: calc(var(--header-h) + 18px); max-height: calc(100vh - var(--header-h) - var(--footer-h) - 40px); overflow: auto; }
+  }
+  .lectio { padding: 0; overflow: hidden; }
+  .lectio-head { width: 100%; display: flex; align-items: center; justify-content: space-between; gap: .75rem; padding: .95rem 1.1rem; background: var(--porphyry); color: var(--gold-50); border: 0; text-align: left; cursor: pointer; }
+  .lectio-head .t { font-family: var(--serif); font-size: 1.15rem; font-weight: 700; }
+  .lectio-head .k { display: block; font-size: .7rem; letter-spacing: .14em; text-transform: uppercase; color: var(--gold); font-weight: 700; }
+  .lectio-head svg { width: 20px; height: 20px; transition: transform .2s; flex: none; }
+  .lectio-head[aria-expanded="false"] svg { transform: rotate(-90deg); }
+  @media (min-width: 768px) { .lectio-head { cursor: default; } .lectio-head svg { display: none; } }
+  .lectio-body { padding: 1rem 1.1rem 1.15rem; display: grid; gap: 1rem; }
+  @media (max-width: 767px) { .lectio-body.collapsed { display: none; } }
+  .lectio-text { list-style: none; margin: 0; padding: 0; display: grid; gap: .45rem; }
+  .lectio-text li { font-family: var(--serif); font-size: 1.12rem; line-height: 1.45; color: var(--ink); }
+  .lectio-text .es { display: none; font-family: var(--sans); font-size: .82rem; color: var(--muted); line-height: 1.35; }
+  .show-versio .lectio-text .es { display: block; }
+  .versio-row { display: flex; align-items: center; justify-content: space-between; gap: .75rem; flex-wrap: wrap; font-size: .8rem; color: var(--muted); }
+  .toggle { display: inline-flex; align-items: center; gap: .45rem; background: var(--marble-2); border: 1px solid var(--line); color: var(--ink-2); font-weight: 700; font-size: .78rem; border-radius: 999px; padding: .3rem .7rem; cursor: pointer; }
+  .toggle .dot { width: 26px; height: 15px; border-radius: 999px; background: var(--marble-3); position: relative; transition: background .2s; }
+  .toggle .dot::after { content: ""; position: absolute; top: 2px; left: 2px; width: 11px; height: 11px; border-radius: 50%; background: #fff; transition: transform .2s; box-shadow: 0 1px 2px rgba(0, 0, 0, .2); }
+  .toggle[aria-pressed="true"] .dot { background: var(--porphyry); }
+  .toggle[aria-pressed="true"] .dot::after { transform: translateX(11px); }
+  .capsula { background: var(--gold-50); border: 1px solid #efe0a8; border-radius: 14px; padding: .8rem .9rem; display: grid; gap: .45rem; font-size: .9rem; color: var(--ink-2); }
+  .capsula p { display: grid; grid-template-columns: 5.6rem minmax(0, 1fr); gap: .5rem; }
+  .capsula .k { font-size: .68rem; letter-spacing: .1em; text-transform: uppercase; font-weight: 800; color: var(--gold-700); padding-top: .18rem; }
+  .capsula .k.ius { color: var(--porphyry); }
+  .decl-wrap { overflow-x: auto; }
+  .decl { width: 100%; border-collapse: collapse; font-size: .88rem; font-variant-numeric: tabular-nums; }
+  .decl th, .decl td { padding: .38rem .5rem; text-align: left; border-bottom: 1px solid var(--line); white-space: nowrap; }
+  .decl thead th { font-size: .7rem; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); font-weight: 800; }
+  .decl tbody th { font-weight: 700; color: var(--ink-2); font-family: var(--serif); }
+  .decl td { font-family: var(--serif); font-size: 1rem; color: var(--porphyry); font-weight: 700; }
+  .decl tr.hl td, .decl tr.hl th { background: var(--porphyry-50); }
+
+  .challenge { padding: 1.2rem 1.15rem 1.35rem; display: grid; gap: 1rem; animation: rise .35s ease-out; }
+  @media (min-width: 640px) { .challenge { padding: 1.6rem 1.7rem 1.8rem; } }
+  .q-top { display: flex; align-items: center; gap: .5rem; flex-wrap: wrap; font-size: .78rem; }
+  .tag { display: inline-flex; align-items: center; gap: .3rem; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; font-size: .7rem; padding: .25rem .6rem; border-radius: 999px; }
+  .tag-orberg { background: var(--porphyry-50); color: var(--porphyry); }
+  .tag-syntax { background: #eef1f6; color: var(--pc2); }
+  .tag-ius { background: var(--gold-50); color: var(--gold-700); }
+  .tag-morph { background: #f4ece5; color: var(--pc3); }
+  .tag-scribe { background: #ece9f3; color: #4b3b74; }
+  .tag-retry { background: var(--err-50); color: var(--err-700); }
+  .qcount { margin-left: auto; color: var(--muted); font-variant-numeric: tabular-nums; font-weight: 700; }
+  .prompt { font-size: 1.28rem; font-weight: 800; line-height: 1.3; color: var(--ink); text-wrap: balance; }
+  .tablet { background: var(--marble-2); border: 1px solid var(--line); border-radius: 14px; padding: .9rem 1rem; }
+  .tablet .lbl { font-size: .68rem; letter-spacing: .14em; text-transform: uppercase; font-weight: 800; color: var(--muted); display: block; margin-bottom: .2rem; }
+  .latin-line { font-family: var(--serif); font-size: clamp(1.35rem, 4.2vw, 1.75rem); line-height: 1.55; color: var(--ink); }
+  .gloss { color: var(--muted); font-size: .9rem; font-style: italic; }
+  .gap { display: inline-block; min-width: 3.2em; border-bottom: 3px solid var(--porphyry); color: transparent; line-height: 1; }
+  .opts { display: grid; gap: .65rem; }
+  @media (min-width: 640px) { .opts.two { grid-template-columns: 1fr 1fr; } }
+  .opt {
+    display: flex; gap: .75rem; align-items: center; width: 100%; text-align: left;
+    padding: .8rem .95rem; background: #fff; color: var(--ink);
+    border: 2px solid var(--line); border-bottom-width: 4px; border-radius: 14px; cursor: pointer;
+    transition: background-color .15s, border-color .15s, transform .08s; font-size: .98rem; line-height: 1.35;
+  }
+  .opt:hover:not(:disabled) { background: var(--marble-2); }
+  .opt:active:not(:disabled) { transform: translateY(2px); }
+  .opt:disabled { cursor: default; }
+  .opt.latin .opt-text { font-family: var(--serif); font-size: 1.15rem; }
+  .opt-key { width: 1.7rem; height: 1.7rem; flex: none; display: grid; place-items: center; border: 2px solid var(--line); border-radius: 8px; font-size: .78rem; font-weight: 800; color: var(--muted); }
+  .opt.is-selected { border-color: var(--porphyry); background: var(--porphyry-50); }
+  .opt.is-selected .opt-key { border-color: var(--porphyry); color: var(--porphyry); }
+  .opt.is-ok { border-color: var(--ok); background: var(--ok-50); }
+  .opt.is-ok .opt-key { border-color: var(--ok); color: var(--ok-700); }
+  .opt.is-bad { border-color: var(--err); background: var(--err-50); animation: shake .4s; }
+  .opt.is-bad .opt-key { border-color: var(--err); color: var(--err-700); }
+  .opt.is-dim { opacity: .55; }
+
+  .slot {
+    display: inline-flex; align-items: center; justify-content: center; vertical-align: baseline;
+    min-width: 2.6em; min-height: 1.5em; padding: 0 .35em; margin: 0 .08em;
+    border: 0; border-bottom: 3px solid var(--porphyry); background: var(--porphyry-50); border-radius: 8px 8px 2px 2px;
+    font-family: var(--serif); font-size: inherit; font-weight: 700; color: var(--porphyry); cursor: pointer;
+  }
+  .slot:disabled { cursor: default; }
+  .slot.is-empty { background: var(--marble-2); animation: pulseSlot 1.6s ease-in-out infinite; }
+  .slot.is-ok { background: var(--ok-50); border-color: var(--ok); color: var(--ok-700); }
+  .slot.is-bad { background: var(--err-50); border-color: var(--err); color: var(--err-700); text-decoration: line-through; }
+  .bank { display: flex; flex-wrap: wrap; gap: .6rem; padding-top: .25rem; }
+  .tile {
+    min-width: 3.2rem; padding: .55rem .95rem; border-radius: 12px; background: #fff; color: var(--ink);
+    border: 2px solid var(--line); border-bottom-width: 4px; font-family: var(--serif); font-size: 1.3rem; font-weight: 700; cursor: pointer;
+    transition: transform .08s, opacity .15s;
+  }
+  .tile:hover:not(:disabled) { background: var(--marble-2); }
+  .tile:active:not(:disabled) { transform: translateY(2px); }
+  .tile.is-used { opacity: .25; cursor: default; }
+  .tile:disabled { cursor: default; }
+
+  .match { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: .6rem .7rem; align-items: start; }
+  .match-col { display: grid; gap: .6rem; }
+  .match-col .col-lbl { font-size: .68rem; letter-spacing: .12em; text-transform: uppercase; font-weight: 800; color: var(--muted); }
+  .mitem {
+    --pc: var(--line);
+    display: flex; align-items: center; gap: .5rem; width: 100%; min-height: 3.4rem; text-align: left;
+    padding: .55rem .7rem; background: #fff; border: 2px solid var(--line); border-bottom-width: 4px; border-radius: 12px;
+    font-size: .88rem; line-height: 1.3; color: var(--ink); cursor: pointer; transition: background-color .15s, border-color .15s;
+  }
+  .mitem.left { font-family: var(--serif); font-size: 1.05rem; font-weight: 700; }
+  .mitem:hover:not(:disabled) { background: var(--marble-2); }
+  .mitem:disabled { cursor: default; }
+  .mitem .badge { flex: none; width: 1.6rem; height: 1.6rem; border-radius: 50%; display: grid; place-items: center; font-family: var(--serif); font-size: .72rem; font-weight: 700; border: 2px dashed var(--line); color: transparent; }
+  .mitem.is-active { border-color: var(--porphyry); background: var(--porphyry-50); }
+  .mitem.is-active .badge { border-color: var(--porphyry); }
+  .mitem.paired { border-color: var(--pc); }
+  .mitem.paired .badge { background: var(--pc); border: 2px solid var(--pc); color: #fff; }
+  .mitem.c0 { --pc: var(--pc0); } .mitem.c1 { --pc: var(--pc1); } .mitem.c2 { --pc: var(--pc2); } .mitem.c3 { --pc: var(--pc3); }
+  .mitem.is-ok { border-color: var(--ok); background: var(--ok-50); }
+  .mitem.is-bad { border-color: var(--err); background: var(--err-50); }
+  .match-hint { font-size: .82rem; color: var(--muted); }
+
+  .type-input {
+    width: 100%; font-family: var(--serif); font-size: 1.5rem; padding: .7rem .95rem; border-radius: 14px;
+    border: 2px solid var(--line); border-bottom-width: 4px; background: #fff; color: var(--ink); outline: none;
+  }
+  .type-input:focus { border-color: var(--porphyry); }
+  .type-input.is-ok { border-color: var(--ok); background: var(--ok-50); }
+  .type-input.is-near { border-color: var(--amber); background: var(--amber-50); }
+  .type-input.is-bad { border-color: var(--err); background: var(--err-50); }
+  .type-help { font-size: .82rem; color: var(--muted); }
+  kbd { font-family: var(--serif); background: var(--marble-2); border: 1px solid var(--line); border-bottom-width: 2px; border-radius: 5px; padding: 0 .3em; }
+
+  /* ---------- Macron keyboard ---------- */
+  .macron-kb {
+    position: fixed; left: 50%; transform: translateX(-50%); z-index: 45;
+    bottom: calc(var(--footer-h) + 12px);
+    display: flex; align-items: center; gap: .3rem; padding: .4rem; max-width: calc(100vw - 32px);
+    background: var(--porphyry-900); border-radius: 16px; box-shadow: 0 10px 26px rgba(63, 0, 16, .35);
+    animation: rise .25s ease-out;
+  }
+  .macron-kb .lbl { color: var(--gold); font-size: .62rem; letter-spacing: .12em; text-transform: uppercase; font-weight: 800; padding: 0 .35rem 0 .3rem; writing-mode: horizontal-tb; }
+  @media (max-width: 400px) { .macron-kb .lbl { display: none; } }
+  .kb-key {
+    width: 2.6rem; height: 2.6rem; border-radius: 11px; border: 0; cursor: pointer;
+    background: var(--marble); color: var(--porphyry); font-family: var(--serif); font-size: 1.35rem; font-weight: 700;
+    box-shadow: 0 3px 0 #b9a98f; transition: transform .06s;
+  }
+  .kb-key:active { transform: translateY(2px); box-shadow: 0 1px 0 #b9a98f; }
+  .kb-key.shift { background: transparent; color: var(--gold); box-shadow: none; border: 1px solid rgba(212, 175, 55, .5); font-family: var(--sans); font-size: .95rem; }
+  .kb-key.shift[aria-pressed="true"] { background: var(--gold); color: var(--porphyry-900); }
+
+  /* ---------- Check bar ---------- */
+  .checkbar {
+    position: fixed; left: 0; right: 0; bottom: 0; z-index: 44;
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+    background: rgba(253, 251, 247, .97); border-top: 2px solid var(--line);
+    transition: background-color .2s, border-color .2s;
+  }
+  .checkbar[data-state="correct"] { background: var(--ok-50); border-top-color: var(--ok); }
+  .checkbar[data-state="wrong"] { background: var(--err-50); border-top-color: var(--err); }
+  .checkbar[data-state="near"] { background: var(--amber-50); border-top-color: var(--amber); }
+  .checkbar-inner { max-width: 72rem; margin: 0 auto; padding: .9rem 16px; display: flex; flex-direction: column; gap: .8rem; }
+  @media (min-width: 700px) { .checkbar-inner { flex-direction: row; align-items: center; gap: 1.5rem; padding-block: 1.1rem; } }
+  .fb { flex: 1; min-width: 0; display: flex; gap: .8rem; align-items: flex-start; max-height: 42vh; overflow: auto; animation: rise .25s ease-out; }
+  .fb-icon { width: 44px; height: 44px; border-radius: 50%; display: grid; place-items: center; flex: none; background: #fff; }
+  .fb-icon svg { width: 26px; height: 26px; }
+  .checkbar[data-state="correct"] .fb-icon { color: var(--ok-700); box-shadow: 0 0 0 3px var(--ok); }
+  .checkbar[data-state="wrong"] .fb-icon { color: var(--err-700); box-shadow: 0 0 0 3px var(--err); }
+  .checkbar[data-state="near"] .fb-icon { color: var(--amber-700); box-shadow: 0 0 0 3px var(--amber); }
+  .fb-title { font-family: var(--serif); font-size: 1.35rem; font-weight: 700; line-height: 1.2; }
+  .checkbar[data-state="correct"] .fb-title { color: var(--ok-700); }
+  .checkbar[data-state="wrong"] .fb-title { color: var(--err-700); }
+  .checkbar[data-state="near"] .fb-title { color: var(--amber-700); }
+  .fb-answer { font-size: .92rem; font-weight: 700; color: var(--ink); margin-top: .15rem; }
+  .fb-answer .la { font-size: 1.05rem; }
+  .fb-explain { font-size: .9rem; color: var(--ink-2); margin-top: .3rem; max-width: 70ch; }
+  .fb-hint { flex: 1; font-size: .85rem; color: var(--muted); display: none; }
+  @media (min-width: 700px) { .fb-hint { display: block; } }
+  .btn-check { width: 100%; min-height: 3.2rem; }
+  @media (min-width: 700px) { .btn-check { width: auto; min-width: 16rem; flex: none; white-space: nowrap; } }
+
+  /* ---------- Victory / Tribunal ---------- */
+  .center-card { padding: 1.6rem 1.25rem 1.5rem; display: grid; gap: 1rem; animation: rise .4s ease-out; }
+  @media (min-width: 640px) { .center-card { padding: 2.2rem 2.2rem 2rem; } }
+  .wreath { position: relative; width: 150px; height: 150px; margin: 0 auto; color: var(--gold); }
+  .wreath svg { width: 100%; height: 100%; }
+  .wreath .num { position: absolute; inset: 0; display: grid; place-items: center; font-family: var(--serif); font-weight: 700; font-size: 2.6rem; color: var(--porphyry); }
+  .victory-head { text-align: center; display: grid; gap: .3rem; }
+  .victory-head h1 { font-size: clamp(2.3rem, 7vw, 3.2rem); }
+  .promo { display: flex; align-items: center; gap: .8rem; padding: .8rem 1rem; border-radius: 14px; background: var(--porphyry); color: var(--gold-50); }
+  .promo svg { width: 36px; height: 36px; color: var(--gold); flex: none; }
+  .promo .name { font-family: var(--serif); font-size: 1.2rem; font-weight: 700; color: #fff; }
+  .stat-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .6rem; }
+  @media (min-width: 560px) { .stat-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+  .stat { border: 2px solid var(--line); border-radius: 14px; padding: .7rem .8rem; background: var(--marble); }
+  .stat .k { font-size: .66rem; letter-spacing: .12em; text-transform: uppercase; font-weight: 800; color: var(--muted); }
+  .stat .k .es { text-transform: none; letter-spacing: 0; font-weight: 600; }
+  .stat .v { font-family: var(--serif); font-size: 1.7rem; font-weight: 700; color: var(--ink); font-variant-numeric: tabular-nums; line-height: 1.2; }
+  .stat.gold { border-color: #eedc9c; background: var(--gold-50); }
+  .stat.gold .v { color: var(--gold-700); }
+  .bonus { font-size: .88rem; color: var(--ink-2); display: grid; gap: .2rem; }
+  .actions { display: flex; flex-wrap: wrap; gap: .75rem; }
+  .actions .btn { flex: 1 1 13rem; }
+
+  .tribunal-head { background: var(--porphyry-900); color: var(--gold-50); border-radius: 18px; padding: 1.3rem 1.2rem; display: grid; grid-template-columns: 56px minmax(0, 1fr); gap: .9rem; align-items: center; }
+  .tribunal-head svg { width: 56px; height: 56px; color: var(--gold); }
+  .tribunal-head h1 { font-family: var(--serif); font-size: clamp(1.4rem, 4.8vw, 2rem); font-weight: 700; line-height: 1.15; color: #fff; }
+  .tribunal-head p { font-size: .9rem; color: #e9d8dc; margin-top: .25rem; }
+  .dots { display: flex; gap: .45rem; }
+  .dots span { width: 2rem; height: 2rem; border-radius: 50%; display: grid; place-items: center; font-family: var(--serif); font-weight: 700; font-size: .8rem; border: 2px solid var(--line); color: var(--muted); background: #fff; }
+  .dots span.now { border-color: var(--porphyry); color: var(--porphyry); }
+  .dots span.ok { background: var(--ok); border-color: var(--ok); color: var(--ok-900); }
+  .dots span.bad { background: var(--err); border-color: var(--err); color: #fff; }
+  .trib-explain { font-size: .9rem; color: var(--ink-2); padding: .75rem .9rem; border-radius: 12px; background: var(--marble-2); }
+  .verdict { text-align: center; display: grid; gap: .5rem; }
+  .verdict h2 { font-family: var(--serif); font-size: 2.3rem; font-weight: 700; }
+  .verdict.abs h2 { color: var(--ok-700); }
+  .verdict.dam h2 { color: var(--err-700); }
+
+  /* ---------- Thēsaurus ---------- */
+  .hero-actions { display: flex; flex-wrap: wrap; align-items: center; gap: .6rem 1rem; margin-top: 1rem; }
+  .para { display: block; margin-top: .4rem; font-size: .95rem; color: var(--porphyry); }
+  .thes-bar { display: grid; gap: .75rem; margin-bottom: 1rem; }
+  @media (min-width: 900px) { .thes-bar { grid-template-columns: auto minmax(0, 1fr); align-items: center; } }
+  .seg { display: flex; flex-wrap: wrap; gap: .35rem; }
+  .seg-btn { display: inline-flex; align-items: center; gap: .35rem; padding: .45rem .8rem; border-radius: 999px; border: 2px solid var(--line); background: #fff; color: var(--ink-2); font-weight: 800; font-size: .85rem; cursor: pointer; }
+  .seg-btn .n { font-size: .72rem; color: var(--muted); font-variant-numeric: tabular-nums; }
+  .seg-btn[aria-selected="true"] { background: var(--porphyry); border-color: var(--porphyry); color: #fff; }
+  .seg-btn[aria-selected="true"] .n { color: var(--gold); }
+  .search input { width: 100%; padding: .65rem .9rem; border-radius: 12px; border: 2px solid var(--line); background: #fff; color: var(--ink); outline: none; }
+  .search input:focus { border-color: var(--porphyry); }
+  .thes-list { display: grid; gap: .8rem; align-items: start; }
+  @media (min-width: 900px) { .thes-list { grid-template-columns: 1fr 1fr; } }
+  .thes-summary, .thes-empty, .voc-wrap { grid-column: 1 / -1; }
+  .thes-summary { font-size: .9rem; color: var(--ink-2); }
+  .entry { padding: 1rem 1.1rem; display: grid; gap: .55rem; }
+  .entry-q { font-size: 1.02rem; font-weight: 800; line-height: 1.3; color: var(--ink); }
+  .entry-q.la { font-size: 1.15rem; }
+  .entry-la { font-size: 1.2rem; color: var(--ink); line-height: 1.45; }
+  .blank { display: inline-block; min-width: 2.2em; border-bottom: 2px solid var(--porphyry); color: transparent; }
+  .entry-opts { padding-left: 1.3rem; display: grid; gap: .15rem; font-size: .9rem; color: var(--ink-2); }
+  .entry-opts li.la { font-size: 1.02rem; }
+  .entry details { border-top: 1px dashed var(--line); padding-top: .5rem; }
+  .entry summary { cursor: pointer; font-weight: 800; font-size: .82rem; letter-spacing: .04em; color: var(--porphyry); list-style-position: inside; }
+  .entry-a { margin-top: .45rem; font-weight: 700; color: var(--ok-700); }
+  .entry-a .la { font-size: 1.05rem; }
+  .entry-x { margin-top: .3rem; font-size: .9rem; color: var(--ink-2); }
+  .st { font-size: .7rem; font-weight: 800; padding: .2rem .55rem; border-radius: 999px; letter-spacing: .03em; }
+  .st-nov { background: var(--marble-2); color: var(--muted); }
+  .st-vis { background: var(--ok-50); color: var(--ok-700); }
+  .st-rep { background: var(--err-50); color: var(--err-700); }
+  .voc-wrap { overflow-x: auto; padding: .4rem .6rem; }
+  .voc td, .voc th { vertical-align: top; }
+  .voc td { font-size: .95rem; }
+  .voc td:nth-child(2), .voc td.dl { font-family: var(--sans); font-weight: 500; color: var(--ink-2); font-size: .85rem; white-space: normal; min-width: 7rem; }
+  .voc .pl { color: var(--muted); font-weight: 500; }
+  .voc tbody th { font-size: 1.02rem; }
+
+  @keyframes rise { from { opacity: .001; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+  @keyframes shake { 0%, 100% { transform: translateX(0); } 20% { transform: translateX(-6px); } 40% { transform: translateX(6px); } 60% { transform: translateX(-4px); } 80% { transform: translateX(4px); } }
+  @keyframes heartBreak { 0% { transform: scale(1); } 30% { transform: scale(1.4) rotate(-12deg); color: var(--err); } 100% { transform: scale(1); } }
+  @keyframes floatUp { 0% { opacity: 0; transform: translateY(0); } 15% { opacity: 1; } 100% { opacity: 0; transform: translateY(-28px); } }
+  @keyframes flicker { 0%, 100% { transform: scale(1) rotate(0); } 50% { transform: scale(1.12) rotate(-4deg); } }
+  @keyframes pulseSlot { 0%, 100% { box-shadow: 0 0 0 0 rgba(128, 0, 32, 0); } 50% { box-shadow: 0 0 0 4px rgba(128, 0, 32, .12); } }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation-duration: .001ms !important; animation-iteration-count: 1 !important; transition-duration: .001ms !important; }
+  }
+</style>
+</head>
+<body class="bg-[#FDFBF7] text-slate-800 font-sans min-h-screen">
+<div id="app">
+  <a href="#screen" class="skip">Saltar al contenido</a>
+  <header id="topbar">
+    <div class="topbar-inner">
+      <button id="homeBtn" class="brand" type="button" data-action="go-map" aria-label="Volver al Cursus Honōrum">
+        <svg viewBox="0 0 32 32" aria-hidden="true">
+          <path fill="currentColor" d="M3 5.5 16 1l13 4.5V8H3z"/>
+          <rect x="5" y="9" width="22" height="2.4" rx="1" fill="#D4AF37"/>
+          <rect x="7.5" y="12.3" width="17" height="12.4" fill="currentColor"/>
+          <path d="M11 13.5v10M14.3 13.5v10M17.7 13.5v10M21 13.5v10" stroke="#FDFBF7" stroke-width="1.3"/>
+          <rect x="5" y="25.4" width="22" height="2.2" rx="1" fill="#D4AF37"/>
+          <rect x="3" y="28.2" width="26" height="2.6" rx="1" fill="currentColor"/>
+        </svg>
+        <span class="wordmark">LVDVS<span class="ip">·</span>LATINVS</span>
+      </button>
+      <div class="progress-wrap">
+        <div id="progressTrack" class="progress-track" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-label="Progreso">
+          <div id="progressFill" class="progress-fill"></div>
+        </div>
+        <div class="progress-meta">
+          <span id="progressLabel"></span>
+          <span id="rankChip" class="rank-chip" title="Gradus: tu rango jurídico"></span>
+        </div>
+      </div>
+      <div class="stats">
+        <span id="streakChip" class="chip chip-streak" title="Racha de aciertos seguidos">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12.6 1.8c.7 3.3-1.6 5-1.6 7.3 0 1.2.8 2.1 1.9 2.1 1.3 0 1.9-1.1 1.9-2.4 2.3 1.6 3.7 4.2 3.7 6.6 0 3.9-2.9 6.8-6.5 6.8S5.5 19.3 5.5 15.4c0-5.2 5.4-8.4 7.1-13.6z"/></svg>
+          <span id="streakVal">0</span>
+        </span>
+        <span id="xpChip" class="chip chip-xp" title="Puntos de experiencia">
+          <span id="xpVal">0</span><small>XP</small>
+          <span id="xpFloat" class="xp-float"></span>
+        </span>
+        <button id="heartsBtn" class="hearts" type="button" data-action="hearts" aria-expanded="false" aria-controls="heartsPop"></button>
+        <button id="soundBtn" class="icon-btn" type="button" data-action="sound"></button>
+        <div id="heartsPop" class="pop" hidden></div>
+      </div>
+    </div>
+    <div class="meander" aria-hidden="true"></div>
+  </header>
+
+  <main id="screen" tabindex="-1"></main>
+
+  <div id="macronKb" class="macron-kb" role="toolbar" aria-label="Teclado de macrones" hidden>
+    <span class="lbl">Macrōnēs</span>
+    <button class="kb-key" type="button" data-key="ā">ā</button>
+    <button class="kb-key" type="button" data-key="ē">ē</button>
+    <button class="kb-key" type="button" data-key="ī">ī</button>
+    <button class="kb-key" type="button" data-key="ō">ō</button>
+    <button class="kb-key" type="button" data-key="ū">ū</button>
+    <button class="kb-key shift" type="button" data-key="shift" aria-pressed="false" aria-label="Mayúsculas">⇧</button>
+  </div>
+
+  <footer id="checkbar" class="checkbar" data-state="idle" hidden>
+    <div class="checkbar-inner">
+      <div id="fb" class="fb" role="status" aria-live="polite" hidden>
+        <span id="fbIcon" class="fb-icon"></span>
+        <div class="min-w-0">
+          <p id="fbTitle" class="fb-title"></p>
+          <p id="fbAnswer" class="fb-answer"></p>
+          <p id="fbExplain" class="fb-explain"></p>
+        </div>
+      </div>
+      <p id="fbHint" class="fb-hint">Pulsa <kbd>Intro</kbd> para comprobar · <kbd>1</kbd>–<kbd>4</kbd> para elegir opción</p>
+      <button id="btnCheck" class="btn btn-primary btn-check" type="button" data-action="check">Probāre · Comprobar</button>
+    </div>
+  </footer>
+</div>
+
+<script>
+(function () {
+  'use strict';
+
+  /* =========================================================
+     DATOS: módulos, lecciones y ejercicios
+     ========================================================= */
+  const MODULES = [
+    {
+      numeral: 'I',
+      capitulum: 'Capitulum prīmum',
+      title: 'Imperium Rōmānum & Iūs Pūblicum',
+      focus: 'Nominativo y ablativo (sg./pl.) de la 1.ª y 2.ª declinación · in + ablativo · est / sunt',
+      lectio: {
+        heading: 'Imperium Rōmānum',
+        lines: [
+          ['Rōma in Italiā est.', 'Roma está en Italia.'],
+          ['Italia in Eurōpā est. Graecia quoque in Eurōpā est.', 'Italia está en Europa. Grecia también está en Europa.'],
+          ['Italia et Graecia in Eurōpā sunt.', 'Italia y Grecia están en Europa.'],
+          ['Nīlus fluvius est. Nīlus in Aegyptō est.', 'El Nilo es un río. El Nilo está en Egipto.'],
+          ['Brundisium et Tūsculum oppida sunt.', 'Brindisi y Túsculo son ciudades.'],
+          ['Sicilia et Sardinia īnsulae sunt.', 'Sicilia y Cerdeña son islas.']
+        ],
+        capsula: [
+          ['Grammatica', '<b>-a</b> breve = nominativo (sujeto); <b>-ā</b> larga = ablativo. Solo el macrón distingue <i class="la">Italia</i> de <i class="la">Italiā</i>.'],
+          ['Grammatica', '<b>in</b> + ablativo = lugar en donde. Un sujeto pide <b class="la">est</b>; dos o más, <b class="la">sunt</b>.'],
+          ['Iūs', '<i class="la">Pūblicum iūs est quod ad statum reī Rōmānae spectat</i> (Ulpiano, D. 1.1.1.2).']
+        ],
+        table: {
+          head: ['Casus', '1.ª · -a', '2.ª · -us', '2.ª · -um'],
+          rows: [
+            ['Nōm. sg.', '-a', '-us', '-um'],
+            ['Abl. sg.', '-ā', '-ō', '-ō', true],
+            ['Nōm. pl.', '-ae', '-ī', '-a'],
+            ['Abl. pl.', '-īs', '-īs', '-īs', true]
+          ]
+        }
+      },
+      questions: [
+        {
+          type: 'fill', tag: 'Ørberg', kind: 'orberg',
+          prompt: 'Completa la oración con la desinencia correcta.',
+          parts: ['Rōma in Itali', '_', ' est.'],
+          bank: ['ā', 'am', 'ae'],
+          answers: ['ā'],
+          gloss: 'Roma está en Italia.',
+          explain: '<b>in</b> + ablativo expresa el lugar <i>en donde</i>. El ablativo singular de la 1.ª declinación termina en <b>-ā</b> larga: <i class="la">Italiā</i>. <b>-am</b> es acusativo (con <i>in</i> indicaría movimiento «hacia»: <i class="la">in Italiam</i>) y <b>-ae</b> es genitivo/dativo singular o nominativo plural.'
+        },
+        {
+          type: 'mc', tag: 'Syntaxis', kind: 'syntax',
+          prompt: 'Identifica el sujeto y el ablativo locativo.',
+          latin: 'Germānia et Britannia in Eurōpā sunt.',
+          options: [
+            'Sujeto: Germānia et Britannia · Ablativo locativo: in Eurōpā',
+            'Sujeto: Eurōpā · Ablativo locativo: Germānia et Britannia',
+            'Sujeto: Germānia · Ablativo locativo: Britannia in Eurōpā',
+            'Sujeto: Britannia · Ablativo locativo: in Eurōpā'
+          ],
+          answer: 0,
+          explain: '<i class="la">Germānia</i> y <i class="la">Britannia</i> terminan en <b>-a</b> breve: son nominativos y forman un sujeto compuesto; por eso el verbo va en plural (<b class="la">sunt</b>). <i class="la">Eurōpā</i> lleva <b>-ā</b> larga: ablativo regido por <b>in</b>, lugar en donde.'
+        },
+        {
+          type: 'mc', tag: 'Iūs Rōmānum', kind: 'ius',
+          prompt: '¿Qué función cumple «in clārīs» en este brocardo?',
+          latin: 'In clārīs nōn fit interpretātiō.',
+          options: [
+            'Ablativo plural con in: circunstancial de lugar figurado o condición («en lo claro»)',
+            'Acusativo plural con in: dirección («hacia lo claro»)',
+            'Nominativo plural: sujeto de fit',
+            'Genitivo plural: complemento de interpretātiō'
+          ],
+          answer: 0,
+          explain: '<i class="la">clārīs</i> termina en <b>-īs</b>, desinencia de dativo/ablativo plural de la 1.ª y 2.ª declinación; tras <b>in</b> solo puede ser ablativo. Es un adjetivo sustantivado («en las cosas claras»). El acusativo sería <i class="la">clārōs / clāra</i>. El sujeto es <i class="la">interpretātiō</i> (nominativo, 3.ª decl.): «En lo claro no cabe interpretación».'
+        },
+        {
+          type: 'match', tag: 'Morphologia', kind: 'morph',
+          prompt: 'Asocia cada forma con su caso y número.',
+          pairs: [
+            ['Eurōpā', 'Ablativo singular'],
+            ['fluviī', 'Nominativo plural'],
+            ['oppidum', 'Nominativo singular'],
+            ['īnsulīs', 'Ablativo plural']
+          ],
+          explain: '<b>-ā</b> larga marca el ablativo sg. de la 1.ª; <b>-ī</b> el nominativo pl. de los masculinos en -us; <b>-um</b> el nominativo sg. neutro; <b>-īs</b> el ablativo pl. de la 1.ª y 2.ª. (En el Cap. I solo aparecen nominativo y ablativo).'
+        },
+        {
+          type: 'type', tag: 'Scrībe', kind: 'scribe',
+          prompt: 'Escribe el ablativo singular que falta.',
+          latin: 'Sparta in ____ est.',
+          hint: 'Graecia → «en Grecia»',
+          answers: ['Graeciā'],
+          explain: '<i class="la">Graecia</i> (nom.) → <i class="la">in Graeciā</i> (abl.). La <b>-ā</b> final es larga: sin macrón la forma coincide con el nominativo y el caso se pierde.'
+        },
+        {
+          type: 'mc', tag: 'Ørberg', kind: 'orberg', latinOptions: true,
+          prompt: 'Elige la palabra que completa la oración.',
+          latin: 'Nīlus et Rhēnus fluviī ____.',
+          options: ['sunt', 'est', 'fluvius', 'in'],
+          answer: 0,
+          explain: 'Dos sujetos (<i class="la">Nīlus et Rhēnus</i>) exigen verbo en plural: <b class="la">sunt</b>. Observa que <i class="la">fluviī</i> es el nominativo plural de <i class="la">fluvius</i>, en concordancia con el sujeto.'
+        },
+        {
+          type: 'mc', tag: 'Ørberg', kind: 'orberg', latinOptions: true,
+          prompt: 'Responde a la pregunta de Ørberg.',
+          latin: 'Ubi est Rōma?',
+          options: ['Rōma in Italiā est.', 'Rōma in Italia est.', 'Rōma in Italiam est.', 'Rōma Italiā est.'],
+          answer: 0,
+          explain: '<i class="la">Ubi?</i> («¿dónde?») pregunta por el lugar en donde: <b>in</b> + ablativo, <i class="la">in Italiā</i>. Con -a breve sería nominativo; <i class="la">in Italiam</i> (acusativo) indicaría dirección; y los nombres de países necesitan la preposición.'
+        },
+        {
+          type: 'fill', tag: 'Ørberg', kind: 'orberg',
+          prompt: 'Completa con el nominativo plural neutro.',
+          parts: ['Brundisium et Tūsculum oppid', '_', ' sunt.'],
+          bank: ['a', 'um', 'ī', 'īs'],
+          answers: ['a'],
+          gloss: 'Brindisi y Túsculo son ciudades.',
+          explain: 'Los neutros de la 2.ª declinación forman el nominativo plural en <b>-a</b>: <i class="la">oppidum → oppida</i>. <b>-ī</b> es el plural de los masculinos en -us (<i class="la">fluviī</i>) y <b>-īs</b> es ablativo plural.'
+        },
+        {
+          type: 'fill', tag: 'Ørberg', kind: 'orberg',
+          prompt: 'Completa con el nominativo plural.',
+          parts: ['Corsica et Sardinia īnsul', '_', ' sunt.'],
+          bank: ['ae', 'a', 'ā', 'īs'],
+          answers: ['ae'],
+          gloss: 'Córcega y Cerdeña son islas.',
+          explain: 'La 1.ª declinación forma el nominativo plural en <b>-ae</b>: <i class="la">īnsula → īnsulae</i>. Concuerda con el sujeto compuesto y con el verbo <i class="la">sunt</i>.'
+        },
+        {
+          type: 'type', tag: 'Scrībe', kind: 'scribe',
+          prompt: 'Escribe el ablativo singular que falta.',
+          latin: 'Nīlus in ____ est.',
+          hint: 'Aegyptus → «en Egipto»',
+          answers: ['Aegyptō'],
+          explain: '<i class="la">Aegyptus</i> es de la 2.ª declinación (femenino, como muchos nombres de países): ablativo singular en <b>-ō</b> larga, <i class="la">in Aegyptō</i>.'
+        },
+        {
+          type: 'type', tag: 'Scrībe', kind: 'scribe',
+          prompt: 'Escribe el ablativo plural que falta.',
+          latin: 'Corsica et Sardinia īnsulae sunt. In ____ oppida sunt.',
+          hint: 'īnsulae → «en las islas»',
+          answers: ['īnsulīs'],
+          explain: 'Ablativo plural de la 1.ª declinación en <b>-īs</b>: <i class="la">in īnsulīs</i>. La misma desinencia sirve para la 2.ª: <i class="la">in oppidīs, in fluviīs</i>.'
+        },
+        {
+          type: 'mc', tag: 'Morphologia', kind: 'morph',
+          prompt: '¿Qué distingue «Italia» de «Italiā»?',
+          latin: 'Italia in Eurōpā est. · Rōma in Italiā est.',
+          options: [
+            'La cantidad de la -a final: breve en nominativo, larga en ablativo',
+            'El acento: Italia es llana e Italiā aguda',
+            'Nada: son dos grafías de la misma forma',
+            'El género: Italia es femenino e Italiā neutro'
+          ],
+          answer: 0,
+          explain: 'En latín la cantidad vocálica es distintiva. <i class="la">Italia</i> (-a breve) es nominativo, sujeto; <i class="la">Italiā</i> (-ā larga) es ablativo. Los macrones hacen visible esa diferencia, que los romanos pronunciaban aunque no la escribieran.'
+        },
+        {
+          type: 'mc', tag: 'Iūs Rōmānum', kind: 'ius',
+          prompt: '¿Qué caso rige «sine» en este principio?',
+          latin: 'Nūllum crīmen, nūlla poena sine lēge.',
+          options: ['Ablativo', 'Acusativo', 'Genitivo', 'Nominativo'],
+          answer: 0,
+          explain: '<b>sine</b> («sin») rige ablativo, como <b>in</b> de lugar, <b>dē</b>, <b>ex</b> y <b>prō</b>. <i class="la">lēge</i> es el ablativo singular de <i class="la">lēx, lēgis</i> (3.ª declinación): «ningún delito, ninguna pena sin ley» (principio de legalidad).'
+        },
+        {
+          type: 'mc', tag: 'Iūs Rōmānum', kind: 'ius',
+          prompt: '¿Qué función cumple «in dubiō»?',
+          latin: 'In dubiō prō reō.',
+          options: [
+            'Ablativo con in: circunstancia («en caso de duda»)',
+            'Acusativo con in: dirección («hacia la duda»)',
+            'Nominativo: sujeto de la oración',
+            'Genitivo: «de la duda»'
+          ],
+          answer: 0,
+          explain: '<i class="la">dubiō</i> es ablativo singular de <i class="la">dubium</i> (2.ª, neutro) regido por <b>in</b>. También <i class="la">reō</i> es ablativo, regido por <b>prō</b> («a favor de»): «en la duda, a favor del reo».'
+        },
+        {
+          type: 'mc', tag: 'Iūs Rōmānum', kind: 'ius',
+          prompt: 'En «dē factō», ¿qué forma es «factō»?',
+          latin: 'Dē factō · dē iūre',
+          options: [
+            'Ablativo sg. de factum (2.ª, neutro), regido por dē',
+            'Dativo sg. sin preposición',
+            'Nominativo sg. de factum',
+            'Acusativo sg. de factum'
+          ],
+          answer: 0,
+          explain: '<b>dē</b> rige ablativo: <i class="la">dē factō</i>, «de hecho, por la vía de los hechos», frente a <i class="la">dē iūre</i>, «de derecho» (<i class="la">iūre</i>, ablativo de <i class="la">iūs</i>, 3.ª declinación).'
+        },
+        {
+          type: 'match', tag: 'Iūs Rōmānum', kind: 'ius',
+          prompt: 'Relaciona cada locución en ablativo con su sentido.',
+          pairs: [
+            ['In dubiō', 'en la duda'],
+            ['Dē factō', 'de hecho'],
+            ['In articulō mortis', 'en el momento de la muerte'],
+            ['Ipsō factō', 'por el hecho mismo']
+          ],
+          explain: 'Las cuatro usan ablativo: con <b>in</b> y <b>dē</b>, o sin preposición en <i class="la">ipsō factō</i> (ablativo instrumental o causal). <i class="la">In articulō mortis</i> se dice, por ejemplo, del testamento otorgado ante una muerte inminente.'
+        },
+        {
+          type: 'mc', tag: 'Syntaxis', kind: 'syntax', latinOptions: true,
+          prompt: '¿Cuál de estas oraciones es correcta?',
+          latin: 'Aegyptus · Āfrica',
+          options: ['Aegyptus in Āfricā est.', 'Aegyptus in Āfrica est.', 'Aegyptus in Āfricā sunt.', 'Aegyptō in Āfricā est.'],
+          answer: 0,
+          explain: 'Sujeto en nominativo (<i class="la">Aegyptus</i>), lugar en ablativo con <b>in</b> (<i class="la">in Āfricā</i>, -ā larga) y verbo en singular porque hay un solo sujeto (<b class="la">est</b>).'
+        },
+        {
+          type: 'mc', tag: 'Ørberg', kind: 'orberg', latinOptions: true,
+          prompt: 'Responde a la pregunta.',
+          latin: 'Estne Rōma in Graeciā?',
+          options: ['Rōma nōn in Graeciā, sed in Italiā est.', 'Rōma in Graeciā est, sed nōn in Italiā.', 'Graecia in Rōmā est.', 'Rōma et Graecia in Italiā sunt.'],
+          answer: 0,
+          explain: 'La partícula enclítica <b>-ne</b> convierte la oración en pregunta de sí o no. Roma no está en Grecia: <i class="la">nōn … sed …</i> («no … sino …»).'
+        },
+        {
+          type: 'match', tag: 'Morphologia', kind: 'morph',
+          prompt: 'Asocia cada forma con su caso y número.',
+          pairs: [
+            ['Graecia', 'Nominativo singular'],
+            ['fluviīs', 'Ablativo plural'],
+            ['oppida', 'Nominativo plural'],
+            ['Aegyptō', 'Ablativo singular']
+          ],
+          explain: '<i class="la">Graecia</i>: -a breve, nominativo. <i class="la">fluviīs</i>: -īs, ablativo plural. <i class="la">oppida</i>: -a, nominativo plural neutro. <i class="la">Aegyptō</i>: -ō, ablativo singular de la 2.ª.'
+        }
+      ]
+    },
+    {
+      numeral: 'II',
+      capitulum: 'Capitulum secundum',
+      title: 'Familia Rōmāna & Dominium',
+      focus: 'El genetīvus: -ī / -ōrum, -ae / -ārum · posesión y pertenencia · cuius?',
+      lectio: {
+        heading: 'Familia Rōmāna',
+        lines: [
+          ['Iūlius vir Rōmānus est. Aemilia fēmina Rōmāna est.', 'Julio es un hombre romano. Emilia es una mujer romana.'],
+          ['Mārcus et Quīntus fīliī Iūliī sunt.', 'Marco y Quinto son hijos de Julio.'],
+          ['Iūlia fīlia Iūliī et Aemiliae est.', 'Julia es hija de Julio y de Emilia.'],
+          ['Dāvus servus Iūliī est. Iūlius dominus servī est.', 'Davo es esclavo de Julio. Julio es el dueño del esclavo.'],
+          ['Iūlius dominus multōrum servōrum est.', 'Julio es dueño de muchos esclavos.'],
+          ['Syra et Dēlia ancillae sunt. Aemilia domina ancillārum est.', 'Siria y Delia son esclavas. Emilia es la señora de las esclavas.']
+        ],
+        capsula: [
+          ['Grammatica', 'El <b>genetīvus</b> responde a <i class="la">cuius?</i> («¿de quién?»): posesión y pertenencia.'],
+          ['Grammatica', '2.ª decl.: <b>-ī / -ōrum</b>. 1.ª decl.: <b>-ae / -ārum</b>.'],
+          ['Iūs', 'El <i class="la">pater familiās</i> (genitivo arcaico en <b>-ās</b>) es titular del <i class="la">dominium</i> y de la <i class="la">patria potestās</i>.']
+        ],
+        table: {
+          head: ['Casus', '1.ª · -a', '2.ª · -us', '2.ª · -um'],
+          rows: [
+            ['Nōm. sg.', '-a', '-us', '-um'],
+            ['Gen. sg.', '-ae', '-ī', '-ī', true],
+            ['Nōm. pl.', '-ae', '-ī', '-a'],
+            ['Gen. pl.', '-ārum', '-ōrum', '-ōrum', true]
+          ]
+        }
+      },
+      questions: [
+        {
+          type: 'fill', tag: 'Ørberg', kind: 'orberg',
+          prompt: 'Completa: Julio es el dueño del esclavo Davo.',
+          parts: ['Iūlius dominus serv', '_', ' est.'],
+          bank: ['ī', 'us', 'um', 'ōrum'],
+          answers: ['ī'],
+          gloss: 'Julio es el dueño del esclavo.',
+          explain: 'El genitivo singular de la 2.ª declinación termina en <b>-ī</b>: <i class="la">servī</i> = «del esclavo». <b>-us</b> es nominativo, <b>-um</b> acusativo y <b>-ōrum</b> genitivo plural («de los esclavos»).'
+        },
+        {
+          type: 'type', tag: 'Scrībe', kind: 'scribe',
+          prompt: '¿Cuál es el genitivo plural de «ancilla» (esclava)?',
+          latin: 'Aemilia domina ____ est.',
+          hint: 'la señora «de las esclavas»',
+          answers: ['ancillārum'],
+          explain: '1.ª declinación: genitivo plural en <b>-ārum</b>, con <b>ā</b> larga → <i class="la">ancillārum</i>. <i class="la">Aemilia domina ancillārum est</i>: «Emilia es la señora de las esclavas».'
+        },
+        {
+          type: 'match', tag: 'Iūs Rōmānum', kind: 'ius',
+          prompt: 'Relaciona cada brocardo con el genitivo que contiene.',
+          pairs: [
+            ['Fūmus bonī iūris', 'bonī iūris: gen. sg. (2.ª y 3.ª decl.)'],
+            ['Pater familiās', 'familiās: gen. sg. arcaico en -ās'],
+            ['Corpus dēlictī', 'dēlictī: gen. sg. neutro en -ī'],
+            ['Bonōrum possessiō', 'bonōrum: gen. pl. en -ōrum']
+          ],
+          explain: '<i class="la">Fūmus bonī iūris</i>, «apariencia de buen derecho»: la forma correcta es <i class="la">fūmus</i> (nominativo), no «fumum». <i class="la">Pater familiās</i> conserva el viejo genitivo en -ās de la 1.ª. <i class="la">Corpus dēlictī</i>, «cuerpo del delito». <i class="la">Bonōrum possessiō</i>, la posesión pretoria «de los bienes» hereditarios.'
+        },
+        {
+          type: 'mc', tag: 'Ørberg', kind: 'orberg', latinOptions: true,
+          prompt: '¿De quién es hijo Marco? Elige la forma correcta.',
+          latin: 'Mārcus fīlius ____ est.',
+          options: ['Iūliī', 'Iūlius', 'Iūliō', 'Iūliōrum'],
+          answer: 0,
+          explain: 'Genitivo singular de <i class="la">Iūlius</i>: <b class="la">Iūliī</b> (Ørberg escribe la doble ī). <i class="la">Iūlius</i> es nominativo, <i class="la">Iūliō</i> ablativo y <i class="la">Iūliōrum</i> sería genitivo plural.'
+        },
+        {
+          type: 'mc', tag: 'Ørberg', kind: 'orberg', latinOptions: true,
+          prompt: 'Responde en latín, como en el Capítulo II.',
+          latin: 'Cuius servus est Dāvus?',
+          options: ['Dāvus servus Iūliī est.', 'Dāvus servus Iūlius est.', 'Dāvus servī Iūliī est.', 'Dāvus servōrum Iūlius est.'],
+          answer: 0,
+          explain: '<i class="la">Cuius?</i> («¿de quién?») pregunta por el genitivo. La respuesta pone al poseedor en genitivo (<i class="la">Iūliī</i>) y deja <i class="la">servus</i> en nominativo, concordando con el sujeto <i class="la">Dāvus</i>.'
+        },
+        {
+          type: 'mc', tag: 'Iūs Rōmānum', kind: 'ius',
+          prompt: '¿Qué expresa el genitivo en «dominus servōrum»?',
+          latin: 'Iūlius dominus multōrum servōrum est.',
+          options: [
+            'Pertenencia: los esclavos están bajo el dominium de Julio',
+            'Lugar: Julio está entre los esclavos',
+            'Sujeto: los esclavos son los dueños',
+            'Instrumento: Julio domina por medio de los esclavos'
+          ],
+          answer: 0,
+          explain: 'El genitivo marca pertenencia: <i class="la">dominus servōrum</i> = «dueño de los esclavos». Para el Derecho romano el esclavo era jurídicamente una <i class="la">rēs</i>, objeto del <i class="la">dominium</i>; el genitivo expresa aquí la titularidad.'
+        },
+        {
+          type: 'fill', tag: 'Ørberg', kind: 'orberg',
+          prompt: 'Completa: Emilia es la madre de Marco.',
+          parts: ['Aemilia māter Mārc', '_', ' est.'],
+          bank: ['ī', 'us', 'um', 'ō'],
+          answers: ['ī'],
+          gloss: 'Emilia es la madre de Marco.',
+          explain: '<i class="la">Mārcus</i> es de la 2.ª declinación: genitivo singular en <b>-ī</b>, <i class="la">Mārcī</i> («de Marco»). <b>-ō</b> sería ablativo y <b>-um</b> acusativo.'
+        },
+        {
+          type: 'fill', tag: 'Ørberg', kind: 'orberg',
+          prompt: 'Completa: Julia es hija de Emilia.',
+          parts: ['Iūlia fīlia Aemili', '_', ' est.'],
+          bank: ['ae', 'a', 'ā', 'ārum'],
+          answers: ['ae'],
+          gloss: 'Julia es hija de Emilia.',
+          explain: 'Genitivo singular de la 1.ª declinación en <b>-ae</b>: <i class="la">Aemiliae</i>. Ojo: <b>-ae</b> es también nominativo plural (<i class="la">ancillae sunt</i>); aquí el sentido («hija de») exige genitivo. <b>-ārum</b> es el genitivo plural.'
+        },
+        {
+          type: 'type', tag: 'Scrībe', kind: 'scribe',
+          prompt: 'Escribe el genitivo plural que falta.',
+          latin: 'Iūlius dominus multōrum ____ est.',
+          hint: 'servus → «de muchos esclavos»',
+          answers: ['servōrum'],
+          explain: 'Genitivo plural de la 2.ª declinación en <b>-ōrum</b>, con <b>ō</b> larga: <i class="la">servōrum</i>. Concuerda con <i class="la">multōrum</i>, que lleva la misma desinencia.'
+        },
+        {
+          type: 'type', tag: 'Scrībe', kind: 'scribe',
+          prompt: 'Escribe el genitivo singular que falta.',
+          latin: 'Quīntus fīlius ____ est.',
+          hint: 'Aemilia → «hijo de Emilia»',
+          answers: ['Aemiliae'],
+          explain: 'Genitivo singular de la 1.ª declinación: <b>-ae</b>, <i class="la">Aemiliae</i>. Quinto es hijo de Julio y de Emilia.'
+        },
+        {
+          type: 'mc', tag: 'Ørberg', kind: 'orberg', latinOptions: true,
+          prompt: 'Responde en latín.',
+          latin: 'Cuius fīlia est Iūlia?',
+          options: ['Iūlia fīlia Iūliī et Aemiliae est.', 'Iūlia fīlia Iūlius et Aemilia est.', 'Iūlia fīliae Iūliī est.', 'Iūlia fīlia Iūliō et Aemiliā est.'],
+          answer: 0,
+          explain: 'Los dos poseedores van en genitivo: <i class="la">Iūliī</i> (2.ª, -ī) y <i class="la">Aemiliae</i> (1.ª, -ae). <i class="la">fīlia</i> queda en nominativo porque es atributo del sujeto <i class="la">Iūlia</i>.'
+        },
+        {
+          type: 'mc', tag: 'Syntaxis', kind: 'syntax',
+          prompt: '¿Qué caso es «servī» en la última oración?',
+          latin: 'Mēdus servus est. Dāvus quoque servus est. Mēdus et Dāvus servī sunt.',
+          options: [
+            'Nominativo plural: atributo del sujeto plural',
+            'Genitivo singular: «del esclavo»',
+            'Ablativo plural',
+            'Acusativo singular'
+          ],
+          answer: 0,
+          explain: 'La desinencia <b>-ī</b> es ambigua: genitivo singular o nominativo plural de la 2.ª. Aquí hay dos sujetos y el verbo es <i class="la">sunt</i>: <i class="la">servī</i> es nominativo plural («Medo y Davo son esclavos»). En <i class="la">dominus servī</i> sería genitivo.'
+        },
+        {
+          type: 'mc', tag: 'Morphologia', kind: 'morph', latinOptions: true,
+          prompt: '¿Cuál es el genitivo singular de «fīlius»?',
+          latin: 'fīlius, 2.ª declinación',
+          options: ['fīliī', 'fīlius', 'fīliōrum', 'fīliō'],
+          answer: 0,
+          explain: 'Genitivo singular en <b>-ī</b>: <i class="la">fīliī</i> (Ørberg escribe la doble ī; en época arcaica se contraía en <i class="la">fīlī</i>). <i class="la">fīliōrum</i> es genitivo plural y <i class="la">fīliō</i> ablativo.'
+        },
+        {
+          type: 'mc', tag: 'Iūs Rōmānum', kind: 'ius',
+          prompt: '¿Qué significa «rēs nūllīus»?',
+          latin: 'Rēs nūllīus cēdit prīmō occupantī.',
+          options: ['Cosa de nadie', 'Cosa nula o inválida', 'Nada de cosas', 'Cosa de todos'],
+          answer: 0,
+          explain: '<i class="la">nūllīus</i> es el genitivo singular (en -īus) de <i class="la">nūllus</i>: «de nadie». La <i class="la">rēs nūllīus</i> pertenece al primero que la ocupa: <i class="la">cēdit prīmō occupantī</i>. La «cosa de todos» sería <i class="la">rēs commūnis</i>.'
+        },
+        {
+          type: 'mc', tag: 'Iūs Rōmānum', kind: 'ius',
+          prompt: '¿Qué forma es «probandī» en esta regla?',
+          latin: 'Onus probandī incumbit eī quī dīcit.',
+          options: [
+            'Genitivo del gerundio: «la carga de probar»',
+            'Nominativo plural: «los que prueban»',
+            'Ablativo: «probando»',
+            'Genitivo plural de probus'
+          ],
+          answer: 0,
+          explain: 'El gerundio se declina como un neutro de la 2.ª: <i class="la">probandī</i> es su genitivo y complementa a <i class="la">onus</i>, «la carga de probar». La regla completa: «la carga de la prueba incumbe a quien afirma».'
+        },
+        {
+          type: 'match', tag: 'Iūs Rōmānum', kind: 'ius',
+          prompt: 'Relaciona cada expresión con su sentido.',
+          pairs: [
+            ['Corpus iūris cīvīlis', 'cuerpo del derecho civil'],
+            ['Animus dominī', 'intención de ser dueño'],
+            ['Iūs gentium', 'derecho de gentes'],
+            ['Dīligentia bonī patris familiās', 'diligencia de un buen padre de familia']
+          ],
+          explain: 'En todas, el genitivo precisa al sustantivo: <i class="la">iūris cīvīlis</i>, <i class="la">dominī</i>, <i class="la">gentium</i> (gen. pl. de <i class="la">gēns</i>) y <i class="la">bonī patris familiās</i>. El <i class="la">animus dominī</i> es el elemento intencional de la posesión.'
+        },
+        {
+          type: 'match', tag: 'Morphologia', kind: 'morph',
+          prompt: 'Analiza el genitivo de cada sintagma.',
+          pairs: [
+            ['fīlius Iūliī', 'Gen. sg. (2.ª)'],
+            ['domina ancillārum', 'Gen. pl. (1.ª)'],
+            ['fīlia Aemiliae', 'Gen. sg. (1.ª)'],
+            ['dominus servōrum', 'Gen. pl. (2.ª)']
+          ],
+          explain: '1.ª declinación: <b>-ae</b> (sg.) y <b>-ārum</b> (pl.). 2.ª declinación: <b>-ī</b> (sg.) y <b>-ōrum</b> (pl.).'
+        }
+      ]
+    },
+    {
+      numeral: 'III',
+      capitulum: 'Capitulum tertium',
+      title: 'Āctiōnēs & Accūsātīvus',
+      focus: 'El accūsātīvus: -am / -um · complemento directo del verbo transitivo · ad + acusativo',
+      lectio: {
+        heading: 'Puer improbus',
+        lines: [
+          ['Iūlia cantat. Mārcus nōn cantat, sed rīdet.', 'Julia canta. Marco no canta, sino que ríe.'],
+          ['Mārcus Iūliam pulsat. Iūlia plōrat.', 'Marco golpea a Julia. Julia llora.'],
+          ['Iūlia Aemiliam vocat: «Mamma!»', 'Julia llama a Emilia: «¡Mamá!»'],
+          ['Aemilia venit. Iūlius Mārcum verberat.', 'Emilia viene. Julio azota a Marco.'],
+          ['Quis Iūliam pulsat? Mārcus Iūliam pulsat.', '¿Quién golpea a Julia? Marco golpea a Julia.']
+        ],
+        capsula: [
+          ['Grammatica', 'El <b>accūsātīvus</b> marca el complemento directo: <b>-am</b> (1.ª), <b>-um</b> (2.ª).'],
+          ['Grammatica', 'El orden de palabras es libre: la desinencia decide quién hace y quién recibe la acción.'],
+          ['Iūs', '<b>ad</b>, <b>per</b>, <b>ante</b> y <b>post</b> rigen acusativo: <i class="la">ad cautēlam</i>, <i class="la">ad probātiōnem</i>, <i class="la">post mortem</i>.']
+        ],
+        table: {
+          head: ['Casus', '1.ª · -a', '2.ª · -us', '2.ª · -um'],
+          rows: [
+            ['Nōm. sg.', '-a', '-us', '-um'],
+            ['Acc. sg.', '-am', '-um', '-um', true],
+            ['Nōm. pl.', '-ae', '-ī', '-a'],
+            ['Acc. pl.', '-ās', '-ōs', '-a', true]
+          ]
+        }
+      },
+      questions: [
+        {
+          type: 'fill', tag: 'Ørberg', kind: 'orberg',
+          prompt: 'Completa: Marco golpea a Julia.',
+          parts: ['Mārcus Iūli', '_', ' pulsat.'],
+          bank: ['am', 'a', 'ā', 'ae'],
+          answers: ['am'],
+          gloss: 'Marco golpea a Julia.',
+          explain: 'Julia recibe la acción: es complemento directo y va en acusativo singular de la 1.ª, <b>-am</b>. <i class="la">Iūlia</i> (nom.) sería sujeto; <i class="la">Iūliā</i>, ablativo; <i class="la">Iūliae</i>, genitivo/dativo.'
+        },
+        {
+          type: 'mc', tag: 'Syntaxis', kind: 'syntax',
+          prompt: '¿Quién golpea a quién?',
+          latin: 'Iūliam Mārcus pulsat.',
+          options: ['Marco golpea a Julia', 'Julia golpea a Marco', 'Julia y Marco se golpean', 'Marco es golpeado por Julia'],
+          answer: 0,
+          explain: 'El orden no decide la función; la desinencia sí. <i class="la">Iūliam</i> (<b>-am</b>) es acusativo y <i class="la">Mārcus</i> (<b>-us</b>) nominativo, aunque <i class="la">Iūliam</i> vaya primero.'
+        },
+        {
+          type: 'type', tag: 'Scrībe', kind: 'scribe',
+          prompt: 'Escribe el acusativo que falta.',
+          latin: 'Iūlius ____ verberat.',
+          hint: 'Julio azota «a Marco»',
+          answers: ['Mārcum'],
+          explain: 'Acusativo singular de la 2.ª declinación en <b>-um</b>: <i class="la">Mārcus → Mārcum</i>. Cuida la <b>ā</b> larga del nombre.'
+        },
+        {
+          type: 'mc', tag: 'Iūs Rōmānum', kind: 'ius',
+          prompt: '¿En qué caso está «cautēlam» y por qué?',
+          latin: 'Ad cautēlam.',
+          options: [
+            'Acusativo sg. de la 1.ª, regido por ad (finalidad: «como cautela»)',
+            'Ablativo sg., porque toda preposición rige ablativo',
+            'Nominativo sg., sujeto de la locución',
+            'Genitivo sg., complemento de ad'
+          ],
+          answer: 0,
+          explain: '<b>ad</b> siempre rige acusativo: <i class="la">cautēla → cautēlam</i>. Expresa finalidad: un acto se realiza <i class="la">ad cautēlam</i>, como medida preventiva, aunque quizá no sea estrictamente necesario.'
+        },
+        {
+          type: 'mc', tag: 'Iūs Rōmānum', kind: 'ius',
+          prompt: '¿Qué función cumple «pacta»?',
+          latin: 'Pacta sunt servanda.',
+          options: [
+            'Nominativo plural neutro: sujeto de sunt servanda',
+            'Acusativo plural neutro: complemento directo',
+            'Ablativo plural: circunstancial',
+            'Genitivo plural: «de los pactos»'
+          ],
+          answer: 0,
+          explain: 'En los neutros, nominativo y acusativo plural coinciden en <b>-a</b>. <i class="la">Sunt servanda</i> es una perifrástica pasiva («deben ser cumplidos») que no admite complemento directo: <i class="la">pacta</i> es sujeto. «Los pactos deben cumplirse».'
+        },
+        {
+          type: 'match', tag: 'Morphologia', kind: 'morph',
+          prompt: 'Repaso: asocia cada forma con su caso.',
+          pairs: [
+            ['Iūliam', 'Acusativo sg. (1.ª)'],
+            ['servum', 'Acusativo sg. (2.ª)'],
+            ['ancillārum', 'Genitivo pl. (1.ª)'],
+            ['Italiā', 'Ablativo sg. (1.ª)']
+          ],
+          explain: '<b>-am</b> y <b>-um</b> marcan el acusativo singular; <b>-ārum</b>, el genitivo plural de la 1.ª; <b>-ā</b> larga, el ablativo singular.'
+        },
+        {
+          type: 'fill', tag: 'Ørberg', kind: 'orberg',
+          prompt: 'Completa: Emilia llama a Marco.',
+          parts: ['Aemilia Mārc', '_', ' vocat.'],
+          bank: ['um', 'us', 'ī', 'ō'],
+          answers: ['um'],
+          gloss: 'Emilia llama a Marco.',
+          explain: 'Marco es el complemento directo de <i class="la">vocat</i>: acusativo singular de la 2.ª en <b>-um</b>, <i class="la">Mārcum</i>.'
+        },
+        {
+          type: 'fill', tag: 'Ørberg', kind: 'orberg',
+          prompt: 'Completa: Julia llama a Emilia.',
+          parts: ['Iūlia Aemili', '_', ' vocat.'],
+          bank: ['am', 'a', 'ae', 'ā'],
+          answers: ['am'],
+          gloss: 'Julia llama a Emilia.',
+          explain: 'Acusativo singular de la 1.ª en <b>-am</b>: <i class="la">Aemiliam</i>. Con <b>-a</b> habría dos nominativos y no sabríamos quién llama a quién.'
+        },
+        {
+          type: 'type', tag: 'Scrībe', kind: 'scribe',
+          prompt: 'Escribe el acusativo que falta.',
+          latin: 'Mārcus ____ pulsat.',
+          hint: 'Quīntus → «golpea a Quinto»',
+          answers: ['Quīntum'],
+          explain: 'Acusativo singular de la 2.ª en <b>-um</b>: <i class="la">Quīntum</i>. Conserva la <b>ī</b> larga del nombre.'
+        },
+        {
+          type: 'type', tag: 'Scrībe', kind: 'scribe',
+          prompt: 'Escribe el acusativo plural que falta.',
+          latin: 'Dominus ____ vocat.',
+          hint: 'servī → «llama a los esclavos»',
+          answers: ['servōs'],
+          explain: 'Acusativo plural de la 2.ª masculina en <b>-ōs</b>, con <b>ō</b> larga: <i class="la">servōs</i>.'
+        },
+        {
+          type: 'type', tag: 'Scrībe', kind: 'scribe',
+          prompt: 'Escribe el acusativo plural que falta.',
+          latin: 'Domina ____ vocat.',
+          hint: 'ancillae → «llama a las esclavas»',
+          answers: ['ancillās'],
+          explain: 'Acusativo plural de la 1.ª en <b>-ās</b>, con <b>ā</b> larga: <i class="la">ancillās</i>.'
+        },
+        {
+          type: 'mc', tag: 'Ørberg', kind: 'orberg', latinOptions: true,
+          prompt: 'Responde a la pregunta.',
+          latin: 'Quem vocat Iūlia?',
+          options: ['Iūlia Aemiliam vocat.', 'Iūlia Aemilia vocat.', 'Iūliam Aemilia vocat.', 'Iūlia Aemiliae vocat.'],
+          answer: 0,
+          explain: '<i class="la">Quem?</i> («¿a quién?») es el acusativo de <i class="la">quis?</i> y pide un complemento directo en acusativo: <i class="la">Aemiliam</i>. <i class="la">Iūliam Aemilia vocat</i> significa lo contrario: «Emilia llama a Julia».'
+        },
+        {
+          type: 'mc', tag: 'Syntaxis', kind: 'syntax',
+          prompt: '¿Quién azota a quién?',
+          latin: 'Mārcum Iūlius verberat.',
+          options: ['Julio azota a Marco', 'Marco azota a Julio', 'Marco y Julio azotan', 'Julio es azotado por Marco'],
+          answer: 0,
+          explain: '<i class="la">Mārcum</i> (-um) es acusativo, complemento directo; <i class="la">Iūlius</i> (-us) es nominativo, sujeto. El orden de palabras solo cambia el énfasis.'
+        },
+        {
+          type: 'mc', tag: 'Iūs Rōmānum', kind: 'ius',
+          prompt: '¿Qué función cumple «iūra»?',
+          latin: 'Iūra nōvit cūria.',
+          options: [
+            'Acusativo plural neutro: complemento directo de nōvit',
+            'Nominativo plural neutro: sujeto de nōvit',
+            'Ablativo singular: «por derecho»',
+            'Genitivo plural: «de los derechos»'
+          ],
+          answer: 0,
+          explain: 'Como en <i class="la">pacta</i>, la forma en <b>-a</b> de un neutro plural puede ser nominativo o acusativo. Aquí el sujeto es <i class="la">cūria</i> (nominativo sg.) y <i class="la">nōvit</i> («conoce») es transitivo: <i class="la">iūra</i> es acusativo. «El tribunal conoce el derecho».'
+        },
+        {
+          type: 'mc', tag: 'Iūs Rōmānum', kind: 'ius',
+          prompt: '¿Qué significa una forma exigida «ad probātiōnem»?',
+          latin: 'Fōrma ad probātiōnem · fōrma ad sollemnitātem',
+          options: [
+            'Que solo sirve para probar el acto',
+            'Que es requisito de validez del acto',
+            'Que se exige después de la prueba',
+            'Que va contra la prueba'
+          ],
+          answer: 0,
+          explain: '<b>ad</b> + acusativo expresa finalidad. La forma <i class="la">ad probātiōnem</i> sirve para probar el acto; su falta no lo anula. La forma <i class="la">ad sollemnitātem</i>, en cambio, es requisito de validez.'
+        },
+        {
+          type: 'mc', tag: 'Iūs Rōmānum', kind: 'ius',
+          prompt: '¿Qué caso rige «post» en esta locución?',
+          latin: 'Post mortem.',
+          options: ['Acusativo', 'Ablativo', 'Genitivo', 'Nominativo'],
+          answer: 0,
+          explain: '<b>post</b> («después de») rige acusativo: <i class="la">mortem</i> es el acusativo singular de <i class="la">mors, mortis</i> (3.ª declinación, en <b>-em</b>).'
+        },
+        {
+          type: 'match', tag: 'Morphologia', kind: 'morph',
+          prompt: 'Asocia cada forma con su análisis.',
+          pairs: [
+            ['Aemiliam', 'Acus. sg. (1.ª)'],
+            ['servōs', 'Acus. pl. (2.ª)'],
+            ['ancillās', 'Acus. pl. (1.ª)'],
+            ['oppidum', 'Nom. o acus. sg. (neutro)']
+          ],
+          explain: 'Acusativo: <b>-am / -ās</b> en la 1.ª; <b>-um / -ōs</b> en la 2.ª masculina. En los neutros, nominativo y acusativo son siempre iguales: <i class="la">oppidum</i> (sg.), <i class="la">oppida</i> (pl.).'
+        },
+        {
+          type: 'match', tag: 'Iūs Rōmānum', kind: 'ius',
+          prompt: 'Relaciona cada locución en acusativo con su sentido.',
+          pairs: [
+            ['Ad cautēlam', 'como medida preventiva'],
+            ['Ad probātiōnem', 'solo como prueba del acto'],
+            ['Post mortem', 'después de la muerte'],
+            ['Ad hoc', 'para este fin concreto']
+          ],
+          explain: '<b>ad</b> y <b>post</b> rigen acusativo: <i class="la">cautēlam</i>, <i class="la">probātiōnem</i>, <i class="la">mortem</i> y <i class="la">hoc</i> (acusativo neutro de <i class="la">hic</i>).'
+        }
+      ]
+    }
+  ];
+
+  const TRIBUNAL_POOL = [
+    { q: 'Genitivo plural de servus', latin: true, options: ['servōrum', 'servīs', 'servī', 'servum'], answer: 0, explain: '2.ª declinación: genitivo plural en -ōrum.' },
+    { q: 'Ablativo singular de Italia', latin: true, options: ['Italiā', 'Italia', 'Italiam', 'Italiae'], answer: 0, explain: 'Ablativo sg. de la 1.ª: -ā larga.' },
+    { q: 'Acusativo singular de Mārcus', latin: true, options: ['Mārcum', 'Mārcō', 'Mārcī', 'Mārcus'], answer: 0, explain: '2.ª declinación: acusativo sg. en -um.' },
+    { q: '«Iūra nōvit cūria» significa…', options: ['El tribunal conoce el derecho', 'Los derechos son nuevos', 'La curia jura', 'El juez ignora la ley'], answer: 0, explain: 'Iūra (acus. pl. neutro) es el objeto de nōvit («conoce»); cūria es el sujeto.' },
+    { q: '«In dubiō prō reō»: ¿en qué caso está dubiō?', options: ['Ablativo', 'Acusativo', 'Nominativo', 'Genitivo'], answer: 0, explain: 'in + ablativo (situación): «en la duda», y prō + ablativo: «a favor del reo».' },
+    { q: 'Italia et Graecia in Eurōpā ____', latin: true, options: ['sunt', 'est'], answer: 0, explain: 'Sujeto compuesto → verbo en plural.' },
+    { q: '¿Qué caso rige la preposición ad?', options: ['Acusativo', 'Ablativo', 'Genitivo', 'Nominativo'], answer: 0, explain: 'ad + acusativo: ad cautēlam, ad probātiōnem.' },
+    { q: 'Genitivo singular de Aemilia', latin: true, options: ['Aemiliae', 'Aemiliā', 'Aemiliam', 'Aemiliārum'], answer: 0, explain: '1.ª declinación: genitivo sg. en -ae.' },
+    { q: '«Dē iūre»: ¿qué caso rige dē?', options: ['Ablativo', 'Acusativo', 'Genitivo', 'Nominativo'], answer: 0, explain: 'dē + ablativo: dē iūre, dē factō.' },
+    { q: '«Dominus» significa…', options: ['Dueño, señor', 'Casa', 'Derecho', 'Domingo'], answer: 0, explain: 'Dominus, «dueño»: de ahí dominium, la propiedad.' },
+    { q: 'Nominativo plural de oppidum', latin: true, options: ['oppida', 'oppidī', 'oppidōs', 'oppidum'], answer: 0, explain: 'Neutros de la 2.ª: nominativo plural en -a.' },
+    { q: '«Dūra lēx, sed lēx»: ¿en qué caso está lēx?', options: ['Nominativo', 'Acusativo', 'Ablativo', 'Genitivo'], answer: 0, explain: 'lēx es sujeto de una oración nominal: «la ley es dura, pero es la ley».' },
+    { q: 'Acusativo plural de servus', latin: true, options: ['servōs', 'servīs', 'servī', 'servōrum'], answer: 0, explain: '2.ª declinación masculina: acusativo plural en -ōs.' },
+    { q: 'Ablativo plural de īnsula', latin: true, options: ['īnsulīs', 'īnsulae', 'īnsulās', 'īnsulārum'], answer: 0, explain: '1.ª y 2.ª declinación: ablativo plural en -īs.' },
+    { q: 'Genitivo plural de ancilla', latin: true, options: ['ancillārum', 'ancillae', 'ancillās', 'ancillīs'], answer: 0, explain: '1.ª declinación: genitivo plural en -ārum.' },
+    { q: '«Nūllum crīmen sine lēge»: sine rige…', options: ['Ablativo', 'Acusativo', 'Genitivo', 'Nominativo'], answer: 0, explain: 'sine + ablativo: lēge es ablativo de lēx.' },
+    { q: '«Pacta sunt servanda»: pacta es…', options: ['Sujeto (nom. pl. neutro)', 'Complemento directo (acus. pl.)', 'Ablativo plural', 'Genitivo plural'], answer: 0, explain: 'La perifrástica pasiva sunt servanda no admite complemento directo: pacta es sujeto.' },
+    { q: '«Onus probandī» significa…', options: ['Carga de la prueba', 'Prueba de honor', 'Deber de juzgar', 'Prueba honesta'], answer: 0, explain: 'onus, «carga»; probandī, genitivo del gerundio: «de probar».' },
+    { q: '«Rēs nūllīus» significa…', options: ['Cosa de nadie', 'Cosa nula', 'Cosa de todos', 'Ninguna cosa'], answer: 0, explain: 'nūllīus es genitivo singular de nūllus: «de nadie».' },
+    { q: 'Ubi est Rōma?', latin: true, options: ['In Italiā.', 'In Italiam.', 'In Italia.', 'Italiae.'], answer: 0, explain: 'Ubi? pide in + ablativo: in Italiā, con -ā larga.' },
+    { q: 'Nominativo plural de fluvius', latin: true, options: ['fluviī', 'fluviōs', 'fluvia', 'fluviīs'], answer: 0, explain: '2.ª declinación masculina: nominativo plural en -ī.' },
+    { q: '«Post mortem»: post rige…', options: ['Acusativo', 'Ablativo', 'Genitivo', 'Nominativo'], answer: 0, explain: 'post + acusativo: mortem es acusativo de mors.' },
+    { q: '«Iūs gentium» significa…', options: ['Derecho de gentes', 'Derecho de la gente común', 'Justicia gentil', 'Juicio de las gentes'], answer: 0, explain: 'gentium es genitivo plural de gēns: el derecho común a todos los pueblos.' },
+    { q: '«Ad hoc» significa…', options: ['Para este fin concreto', 'Hasta ahora', 'Por el hecho mismo', 'Desde el principio'], answer: 0, explain: 'ad + acusativo (hoc): finalidad, «para esto».' }
+  ];
+
+  MODULES.forEach((m, mi) => m.questions.forEach((q, qi) => { q.id = 'm' + (mi + 1) + '-' + String(qi + 1).padStart(2, '0'); }));
+  TRIBUNAL_POOL.forEach((t, i) => { t.id = 't' + String(i + 1).padStart(2, '0'); });
+
+  /* Vocabulario para el generador de paradigmas (1.ª y 2.ª declinación) */
+  const LEXICON = [
+    { lemma: 'īnsula', es: 'isla' }, { lemma: 'prōvincia', es: 'provincia' }, { lemma: 'fēmina', es: 'mujer' },
+    { lemma: 'fīlia', es: 'hija (dat./abl. pl. también fīliābus)' }, { lemma: 'ancilla', es: 'esclava' }, { lemma: 'domina', es: 'señora, dueña' },
+    { lemma: 'puella', es: 'niña' }, { lemma: 'rosa', es: 'rosa' }, { lemma: 'familia', es: 'familia' },
+    { lemma: 'causa', es: 'causa, proceso' }, { lemma: 'poena', es: 'pena' }, { lemma: 'cūria', es: 'curia, tribunal' },
+    { lemma: 'servus', es: 'esclavo' }, { lemma: 'dominus', es: 'dueño, señor' }, { lemma: 'fluvius', es: 'río' },
+    { lemma: 'fīlius', es: 'hijo' }, { lemma: 'reus', es: 'reo, demandado' }, { lemma: 'fundus', es: 'finca, fundo' },
+    { lemma: 'animus', es: 'ánimo, intención' }, { lemma: 'numerus', es: 'número' },
+    { lemma: 'oppidum', es: 'ciudad' }, { lemma: 'imperium', es: 'imperio, mando' }, { lemma: 'pactum', es: 'pacto' },
+    { lemma: 'factum', es: 'hecho' }, { lemma: 'dēlictum', es: 'delito' }, { lemma: 'dominium', es: 'propiedad' },
+    { lemma: 'verbum', es: 'palabra' }, { lemma: 'dubium', es: 'duda' }
+  ];
+  const CASES = { nom: 'nominativo', gen: 'genitivo', acc: 'acusativo', abl: 'ablativo' };
+  const NUMS = ['singular', 'plural'];
+  const ENDINGS = {
+    f: { nom: ['a', 'ae'], gen: ['ae', 'ārum'], acc: ['am', 'ās'], abl: ['ā', 'īs'] },
+    m: { nom: ['us', 'ī'], gen: ['ī', 'ōrum'], acc: ['um', 'ōs'], abl: ['ō', 'īs'] },
+    n: { nom: ['um', 'a'], gen: ['ī', 'ōrum'], acc: ['um', 'a'], abl: ['ō', 'īs'] }
+  };
+  const DECL_LABEL = { f: '1.ª declinación, femenino', m: '2.ª declinación, masculino', n: '2.ª declinación, neutro' };
+  const TAUGHT = [['nom', 'abl'], ['nom', 'gen', 'abl'], ['nom', 'gen', 'acc', 'abl']];
+  const SESSION_CURATED = 6;
+  const SESSION_GENERATED = 2;
+
+  const RANKS = [
+    { name: 'Tīrō', min: 0, es: 'recluta' },
+    { name: 'Iūris Studiōsus', min: 80, es: 'estudiante de derecho' },
+    { name: 'Iūrisperītus', min: 180, es: 'jurisperito' },
+    { name: 'Praetor', min: 300, es: 'magistrado que dice el derecho' }
+  ];
+
+  const PRAISE = ['Optimē!', 'Rēctē!', 'Bene!', 'Euge!'];
+  const BLAME = ['Errāvistī', 'Nōn rēctē'];
+  const ROMAN = ['I', 'II', 'III', 'IV', 'V', 'VI'];
+  const MACRON = { a: 'ā', e: 'ē', i: 'ī', o: 'ō', u: 'ū', A: 'Ā', E: 'Ē', I: 'Ī', O: 'Ō', U: 'Ū' };
+  const STORE_KEY = 'lvdvs-latinvs-v1';
+
+  /* =========================================================
+     ESTADO
+     ========================================================= */
+  const state = {
+    lives: 5,
+    xp: 0,
+    streak: 0,
+    currentModuleIndex: 0,
+    currentQuestionIndex: 0,
+    screen: 'map',
+    phase: 'question',
+    queue: [],
+    done: 0,
+    total: 0,
+    ui: {},
+    stats: null,
+    unlocked: 1,
+    completed: [],
+    best: {},
+    sound: true,
+    lectioOpen: true,
+    showVersio: false,
+    tribunal: null,
+    lastResult: null,
+    victory: null,
+    resetArmed: false,
+    shift: false,
+    seen: {},
+    missed: {},
+    sessionNo: 0,
+    tribSeen: [],
+    thesTab: '0',
+    thesQuery: ''
+  };
+  let shownXP = 0;
+
+  function load() {
+    try {
+      const raw = localStorage.getItem(STORE_KEY);
+      if (!raw) return;
+      const d = JSON.parse(raw);
+      if (typeof d.xp === 'number') state.xp = d.xp;
+      if (typeof d.lives === 'number') state.lives = Math.max(1, Math.min(5, d.lives));
+      if (typeof d.unlocked === 'number') state.unlocked = Math.max(1, Math.min(MODULES.length, d.unlocked));
+      if (Array.isArray(d.completed)) state.completed = d.completed.filter(n => n >= 0 && n < MODULES.length);
+      if (d.best && typeof d.best === 'object') state.best = d.best;
+      if (typeof d.sound === 'boolean') state.sound = d.sound;
+      if (d.seen && typeof d.seen === 'object') state.seen = d.seen;
+      if (d.missed && typeof d.missed === 'object') state.missed = d.missed;
+      if (typeof d.sessionNo === 'number') state.sessionNo = d.sessionNo;
+      if (Array.isArray(d.tribSeen)) state.tribSeen = d.tribSeen;
+    } catch (e) { /* almacenamiento no disponible */ }
+  }
+  function save() {
+    try {
+      localStorage.setItem(STORE_KEY, JSON.stringify({
+        xp: state.xp, lives: state.lives, unlocked: state.unlocked,
+        completed: state.completed, best: state.best, sound: state.sound,
+        seen: state.seen, missed: state.missed, sessionNo: state.sessionNo, tribSeen: state.tribSeen
+      }));
+    } catch (e) { /* almacenamiento no disponible */ }
+  }
+
+  /* =========================================================
+     UTILIDADES
+     ========================================================= */
+  const $ = (s, r) => (r || document).querySelector(s);
+  function shuffle(a) {
+    const b = a.slice();
+    for (let i = b.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); const t = b[i]; b[i] = b[j]; b[j] = t; }
+    return b;
+  }
+  function esc(s) { return String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c])); }
+  function stripMarks(s) { return s.normalize('NFD').replace(/[̀-ͯ]/g, ''); }
+  function norm(s) { return s.normalize('NFC').trim().replace(/\s+/g, ' ').replace(/[.,;:!?¿¡«»"]+/g, '').toLocaleLowerCase('es'); }
+  function pick(a) { return a[Math.floor(Math.random() * a.length)]; }
+  function mod() { return MODULES[state.currentModuleIndex]; }
+  function cur() { return state.queue[state.currentQuestionIndex]; }
+  function rankIndex(xp) { let r = 0; RANKS.forEach((k, i) => { if (xp >= k.min) r = i; }); return r; }
+  const finePointer = window.matchMedia && window.matchMedia('(pointer: fine)').matches;
+
+  /* =========================================================
+     ICONOS SVG
+     ========================================================= */
+  const ICON = {
+    heart: '<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 21.2s-7.1-4.5-9.6-8.6C.6 9.6 1.7 5.8 4.9 4.6c2.2-.8 4.6-.1 7.1 2.6 2.5-2.7 4.9-3.4 7.1-2.6 3.2 1.2 4.3 5 2.5 8-2.5 4.1-9.6 8.6-9.6 8.6z"/></svg>',
+    check: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.5 12.5l5 5 10-11" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+    cross: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></svg>',
+    tilde: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 9h14M8 15.5c2-2 3.5-2 5 0s3 2 5 0" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/></svg>',
+    lock: '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="10.5" width="14" height="10" rx="2" fill="currentColor"/><path d="M8 10.5V8a4 4 0 0 1 8 0v2.5" fill="none" stroke="currentColor" stroke-width="2.2"/></svg>',
+    chevron: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+    soundOn: '<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z"/><path d="M15.5 9a4.2 4.2 0 0 1 0 6M18 6.5a7.8 7.8 0 0 1 0 11" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>',
+    soundOff: '<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z"/><path d="M16 9.5l5 5M21 9.5l-5 5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>',
+    flame: '<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12.6 1.8c.7 3.3-1.6 5-1.6 7.3 0 1.2.8 2.1 1.9 2.1 1.3 0 1.9-1.1 1.9-2.4 2.3 1.6 3.7 4.2 3.7 6.6 0 3.9-2.9 6.8-6.5 6.8S5.5 19.3 5.5 15.4c0-5.2 5.4-8.4 7.1-13.6z"/></svg>',
+    scales: '<svg viewBox="0 0 64 64" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M32 8v44M20 56h24M12 16h40"/><path d="M12 16 5 33h14zM52 16l-7 17h14z"/><path d="M5 33a7 5 0 0 0 14 0M45 33a7 5 0 0 0 14 0"/></g><circle cx="32" cy="8" r="3" fill="currentColor"/></svg>',
+    key: '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2.5" y="6" width="19" height="12" rx="2.5" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M6 10h1.5M10 10h1.5M14 10h1.5M18 10h.5M7.5 14h9" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>'
+  };
+  function laurelSVG() {
+    let leaves = '';
+    const angles = [98, 114, 130, 146, 162, 178, 194];
+    angles.forEach(t => {
+      const r = t * Math.PI / 180;
+      const bx = 50 + 38 * Math.cos(r), by = 50 + 38 * Math.sin(r);
+      [t + 52, t + 128].forEach(d => {
+        const dr = d * Math.PI / 180;
+        const cx = bx + 6.2 * Math.cos(dr), cy = by + 6.2 * Math.sin(dr);
+        leaves += '<ellipse cx="' + cx.toFixed(2) + '" cy="' + cy.toFixed(2) + '" rx="6.6" ry="2.7" transform="rotate(' + d.toFixed(1) + ' ' + cx.toFixed(2) + ' ' + cy.toFixed(2) + ')"/>';
+      });
+    });
+    const tip = 206 * Math.PI / 180;
+    const tx = 50 + 38 * Math.cos(tip) + 5 * Math.cos(tip + Math.PI / 2), ty = 50 + 38 * Math.sin(tip) + 5 * Math.sin(tip + Math.PI / 2);
+    leaves += '<ellipse cx="' + tx.toFixed(2) + '" cy="' + ty.toFixed(2) + '" rx="6.4" ry="2.6" transform="rotate(' + (206 + 90) + ' ' + tx.toFixed(2) + ' ' + ty.toFixed(2) + ')"/>';
+    const half = '<path d="M50 88 A38 38 0 0 1 15.9 33.9" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><g fill="currentColor">' + leaves + '</g>';
+    return '<svg viewBox="0 0 100 100" aria-hidden="true">' + half + '<g transform="translate(100 0) scale(-1 1)">' + half + '</g><path d="M44 90q6-4 12 0" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>';
+  }
+  const LAUREL = laurelSVG();
+
+  /* =========================================================
+     AUDIO (Web Audio API, sin archivos externos)
+     ========================================================= */
+  let actx = null;
+  function audio() {
+    if (!state.sound) return null;
+    try {
+      actx = actx || new (window.AudioContext || window.webkitAudioContext)();
+      if (actx.state === 'suspended') actx.resume();
+      return actx;
+    } catch (e) { return null; }
+  }
+  function note(c, freq, t0, dur, type, vol) {
+    const o = c.createOscillator(), g = c.createGain();
+    o.type = type || 'sine';
+    o.frequency.setValueAtTime(freq, t0);
+    g.gain.setValueAtTime(0.0001, t0);
+    g.gain.exponentialRampToValueAtTime(vol || 0.16, t0 + 0.015);
+    g.gain.exponentialRampToValueAtTime(0.0001, t0 + dur);
+    o.connect(g); g.connect(c.destination);
+    o.start(t0); o.stop(t0 + dur + 0.05);
+  }
+  function sfx(kind) {
+    const c = audio(); if (!c) return;
+    const t = c.currentTime + 0.01;
+    if (kind === 'ok') { note(c, 783.99, t, 0.18, 'sine', 0.16); note(c, 1046.5, t + 0.09, 0.28, 'sine', 0.15); note(c, 1318.5, t + 0.18, 0.45, 'triangle', 0.1); }
+    else if (kind === 'err') { note(c, 196, t, 0.22, 'square', 0.06); note(c, 146.83, t + 0.13, 0.38, 'sawtooth', 0.05); }
+    else if (kind === 'near') { note(c, 659.25, t, 0.18, 'triangle', 0.12); note(c, 587.33, t + 0.11, 0.28, 'triangle', 0.1); }
+    else if (kind === 'win') { [523.25, 659.25, 783.99, 1046.5].forEach((f, i) => note(c, f, t + i * 0.12, 0.4, 'triangle', 0.13)); note(c, 1318.5, t + 0.52, 0.7, 'sine', 0.1); }
+    else if (kind === 'tap') { note(c, 520, t, 0.06, 'sine', 0.04); }
+    else if (kind === 'gavel') { note(c, 110, t, 0.12, 'square', 0.07); note(c, 98, t + 0.2, 0.18, 'square', 0.07); }
+  }
+
+  /* =========================================================
+     CABECERA
+     ========================================================= */
+  function updateHeader(prevLives) {
+    const hb = $('#heartsBtn');
+    let h = '';
+    for (let i = 0; i < 5; i++) {
+      const full = i < state.lives;
+      const breaking = typeof prevLives === 'number' && i === state.lives && prevLives > state.lives;
+      h += ICON.heart.replace('<svg', '<svg class="' + (full ? 'full' : 'empty') + (breaking ? ' breaking' : '') + '"');
+    }
+    hb.innerHTML = h;
+    hb.setAttribute('aria-label', 'Vītae: ' + state.lives + ' de 5');
+    hb.title = 'Vītae: ' + state.lives + ' / 5';
+
+    const sc = $('#streakChip');
+    $('#streakVal').textContent = state.streak;
+    sc.classList.toggle('is-hot', state.streak >= 3);
+
+    animateXP();
+
+    const r = RANKS[rankIndex(state.xp)];
+    $('#rankChip').innerHTML = LAUREL + '<span>' + r.name + '</span>';
+
+    let pct = 0, label = '';
+    if (state.screen === 'lesson' || state.screen === 'tribunal') {
+      pct = state.total ? Math.round(state.done / state.total * 100) : 0;
+      label = mod().capitulum + ' · ' + state.done + ' / ' + state.total;
+    } else {
+      pct = Math.round(state.completed.length / MODULES.length * 100);
+      label = 'Cursus Honōrum · ' + state.completed.length + ' / ' + MODULES.length + ' capitula';
+    }
+    $('#progressFill').style.width = pct + '%';
+    $('#progressTrack').setAttribute('aria-valuenow', pct);
+    $('#progressLabel').textContent = label;
+
+    $('#soundBtn').innerHTML = state.sound ? ICON.soundOn : ICON.soundOff;
+    $('#soundBtn').setAttribute('aria-label', state.sound ? 'Silenciar sonido' : 'Activar sonido');
+    $('#soundBtn').title = state.sound ? 'Sonido activado' : 'Sonido desactivado';
+
+    $('#heartsPop').innerHTML = '<p><strong>Vītae: ' + state.lives + ' / 5</strong></p><p style="margin-top:.35rem">Cada error cuesta una vida. Si llegas a cero, comparecerás ante el <strong>Tribūnal dē Recuperātiōne</strong>: tres preguntas rápidas; con dos aciertos recuperas tres vidas. Terminar un capítulo te devuelve una.</p>';
+  }
+  let xpAnimating = false;
+  function animateXP() {
+    const target = state.xp, el = $('#xpVal');
+    if (shownXP === target) { if (!xpAnimating) el.textContent = target; return; }
+    const start = shownXP, t0 = performance.now(), dur = 500;
+    shownXP = target;
+    xpAnimating = true;
+    function step(now) {
+      if (shownXP !== target) return;
+      const k = Math.min(1, (now - t0) / dur);
+      el.textContent = Math.round(start + (target - start) * (1 - Math.pow(1 - k, 3)));
+      if (k < 1) requestAnimationFrame(step); else xpAnimating = false;
+    }
+    requestAnimationFrame(step);
+  }
+  function floatXP(n) {
+    const f = $('#xpFloat');
+    f.textContent = '+' + n;
+    f.classList.remove('go'); void f.offsetWidth; f.classList.add('go');
+  }
+
+  /* =========================================================
+     RENDER GENERAL
+     ========================================================= */
+  function render() {
+    updateHeader();
+    const scr = $('#screen');
+    if (state.screen === 'map') scr.innerHTML = viewMap();
+    else if (state.screen === 'lesson') scr.innerHTML = viewLesson();
+    else if (state.screen === 'victory') scr.innerHTML = viewVictory();
+    else if (state.screen === 'tribunal') scr.innerHTML = viewTribunal();
+    else if (state.screen === 'thesaurus') scr.innerHTML = viewThesaurus();
+    $('#checkbar').hidden = state.screen !== 'lesson';
+    updateCheckbar();
+    updateKeyboard();
+    syncLayout();
+    afterChallengeRender();
+  }
+  function renderChallenge() {
+    const c = $('#challenge');
+    if (!c) { render(); return; }
+    c.outerHTML = viewChallenge();
+    updateHeader();
+    updateCheckbar();
+    updateKeyboard();
+    afterChallengeRender();
+  }
+  function afterChallengeRender() {
+    const inp = $('#typeInput');
+    if (inp && state.phase === 'question' && finePointer) { inp.focus(); const n = inp.value.length; inp.setSelectionRange(n, n); }
+  }
+  function syncLayout() {
+    const h = $('#topbar').offsetHeight;
+    const f = $('#checkbar').hidden ? 0 : $('#checkbar').offsetHeight;
+    document.documentElement.style.setProperty('--header-h', h + 'px');
+    document.documentElement.style.setProperty('--footer-h', f + 'px');
+  }
+
+  /* =========================================================
+     VISTA: MAPA (Cursus Honōrum)
+     ========================================================= */
+  function viewMap() {
+    const ri = rankIndex(state.xp), rank = RANKS[ri], next = RANKS[ri + 1];
+    const pct = next ? Math.round((state.xp - rank.min) / (next.min - rank.min) * 100) : 100;
+    const nodes = MODULES.map((m, i) => {
+      const done = state.completed.includes(i), open = i < state.unlocked;
+      const st = done ? 'perfectum' : open ? 'apertum' : 'clausum';
+      const stLabel = done ? ICON.check + 'Perfectum' : open ? 'Apertum' : ICON.lock + 'Clausum';
+      const bs = bankStats(i);
+      const best = '<span class="best">Banco: ' + bs.seen + ' / ' + bs.total + ' vistas' + (bs.missed ? ' · <b style="color:var(--err-700)">' + bs.missed + ' por repasar</b>' : '') + (state.best[i] != null ? ' · mejor ' + state.best[i] + '%' : '') + '</span>';
+      const btn = open
+        ? '<button class="btn btn-sm ' + (done ? 'btn-ghost' : 'btn-primary') + '" type="button" data-action="start" data-i="' + i + '">' + (done ? 'Repete · Repasar' : 'Incipe · Empezar') + '</button>'
+        : '<button class="btn btn-sm" type="button" disabled>Completa el capítulo ' + MODULES[i - 1].numeral + '</button>';
+      return '<li class="node node-' + st + '">' +
+        '<div class="medallion" aria-hidden="true">' + m.numeral + '</div>' +
+        '<div class="node-card card">' +
+          '<p class="node-kicker">' + m.capitulum + ' · Ørberg</p>' +
+          '<h3 class="node-title la">' + m.title + '</h3>' +
+          '<p class="node-focus">' + m.focus + '</p>' +
+          '<div class="node-foot"><span class="status status-' + st + '">' + stLabel + '</span>' + best + btn + '</div>' +
+        '</div></li>';
+    }).join('');
+    const ranks = RANKS.map((r, i) => '<li class="' + (i === ri ? 'current' : i < ri ? 'reached' : '') + '"><span><span class="la">' + r.name + '</span> · ' + r.es + '</span><span>' + r.min + ' XP</span></li>').join('');
+    const all = state.completed.length === MODULES.length;
+    return '<div class="wrap">' +
+      '<section class="hero">' +
+        '<p class="eyebrow">Lingua Latīna per sē illūstrāta · Iūs Rōmānum</p>' +
+        '<h1 class="display">Cursus Honōrum</h1>' +
+        '<p class="lede">Aprende latín <i class="la">ab initiō</i> con el método inductivo de Ørberg y los aforismos del Derecho romano. Cada capítulo superado te acerca a la pretura.' + (all ? ' <b>Cursum perfēcistī!</b> Repasa los capítulos para subir de gradus.' : '') + '</p>' +
+        '<div class="hero-actions"><button class="btn btn-ghost btn-sm" type="button" data-action="thes" data-tab="0">Thēsaurus · Banco de preguntas</button>' +
+        '<span class="muted" style="font-size:.85rem">' + MODULES.reduce((a, m) => a + m.questions.length, 0) + ' preguntas curadas · ' + TRIBUNAL_POOL.length + ' del tribunal · ' + LEXICON.length + ' sustantivos para ejercicios generados</span></div>' +
+      '</section>' +
+      '<div class="map-grid">' +
+        '<ol class="path" aria-label="Capítulos">' + nodes + '</ol>' +
+        '<aside class="side">' +
+          '<div class="card">' +
+            '<p class="eyebrow">Gradus</p>' +
+            '<div class="rank-now">' + LAUREL + '<div><div class="name">' + rank.name + '</div><div class="xp">' + state.xp + ' XP' + (next ? ' · faltan ' + (next.min - state.xp) + ' para ' + next.name : ' · rango máximo') + '</div></div></div>' +
+            '<div class="mini-track"><div style="width:' + pct + '%"></div></div>' +
+            '<ol class="ranks">' + ranks + '</ol>' +
+          '</div>' +
+          '<div class="card">' +
+            '<h2>Rēgulae lūdī</h2>' +
+            '<ul class="rules">' +
+              '<li><span style="color:var(--porphyry)">' + ICON.heart + '</span><span>Tienes 5 <i class="la">vītae</i>. Cada error cuesta una; con cero comparecerás ante el <i class="la">Tribūnal dē Recuperātiōne</i>.</span></li>' +
+              '<li><span style="color:#b4380f">' + ICON.flame + '</span><span>Tres aciertos seguidos activan la racha: +5 XP extra por respuesta.</span></li>' +
+              '<li><span style="color:var(--gold-700)">' + ICON.key + '</span><span>Escribe <b class="la">ā ē ī ō ū</b> con el teclado flotante o con <kbd>a=</kbd>. Sin macrón, la respuesta vale la mitad.</span></li>' +
+              '<li><span style="color:var(--ok-700)">' + ICON.check + '</span><span>Cada sesión toma ' + SESSION_CURATED + ' preguntas del banco (primero las que fallaste, luego las que no has visto) y genera ' + SESSION_GENERATED + ' de declinación. Los errores vuelven al final de la lección y en la sesión siguiente.</span></li>' +
+            '</ul>' +
+          '</div>' +
+          '<button class="link-btn' + (state.resetArmed ? ' armed' : '') + '" type="button" data-action="reset">' + (state.resetArmed ? 'Pulsa otra vez para borrar todo el progreso' : 'Novum initium · reiniciar progreso') + '</button>' +
+        '</aside>' +
+      '</div></div>';
+  }
+
+  /* =========================================================
+     VISTA: LECCIÓN
+     ========================================================= */
+  function viewLesson() {
+    return '<div class="wrap lesson-grid">' + viewLectio(mod()) + viewChallenge() + '</div>';
+  }
+  function viewLectio(m) {
+    const L = m.lectio;
+    const lines = L.lines.map(l => '<li><span class="la">' + l[0] + '</span><span class="es">' + l[1] + '</span></li>').join('');
+    const caps = L.capsula.map(c => '<p><span class="k' + (c[0] === 'Iūs' ? ' ius' : '') + '">' + c[0] + '</span><span>' + c[1] + '</span></p>').join('');
+    const head = L.table.head.map(h => '<th scope="col">' + h + '</th>').join('');
+    const rows = L.table.rows.map(r => '<tr' + (r[4] ? ' class="hl"' : '') + '><th scope="row">' + r[0] + '</th><td>' + r[1] + '</td><td>' + r[2] + '</td><td>' + r[3] + '</td></tr>').join('');
+    return '<aside class="lectio card' + (state.showVersio ? ' show-versio' : '') + '" id="lectio">' +
+      '<button class="lectio-head" type="button" data-action="toggle-lectio" aria-expanded="' + state.lectioOpen + '" aria-controls="lectioBody">' +
+        '<span><span class="k">Micro-Lēctiō · ' + m.capitulum + '</span><span class="t">' + L.heading + '</span></span>' + ICON.chevron +
+      '</button>' +
+      '<div class="lectio-body' + (state.lectioOpen ? '' : ' collapsed') + '" id="lectioBody">' +
+        '<ol class="lectio-text">' + lines + '</ol>' +
+        '<div class="versio-row"><span>Ørberg enseña sin traducir: deduce el sentido por el contexto.</span>' +
+          '<button class="toggle" type="button" data-action="toggle-versio" aria-pressed="' + state.showVersio + '"><span class="dot"></span>Versiō</button></div>' +
+        '<div class="capsula">' + caps + '</div>' +
+        '<div class="decl-wrap"><table class="decl"><thead><tr>' + head + '</tr></thead><tbody>' + rows + '</tbody></table></div>' +
+      '</div></aside>';
+  }
+  function viewChallenge() {
+    const item = cur();
+    if (!item) return '<section id="challenge" class="challenge card"></section>';
+    const q = item.q;
+    let body = '';
+    if (q.type === 'mc') body = viewMC(q);
+    else if (q.type === 'fill') body = viewFill(q);
+    else if (q.type === 'match') body = viewMatch(q);
+    else if (q.type === 'type') body = viewType(q);
+    const n = Math.min(state.done + 1, state.total);
+    return '<section id="challenge" class="challenge card" aria-live="polite">' +
+      '<div class="q-top"><span class="tag tag-' + q.kind + '">' + q.tag + '</span>' +
+        (item.retry ? '<span class="tag tag-retry">Iterum · repaso</span>' : '') +
+        '<span class="qcount">Quaestiō ' + n + ' / ' + state.total + '</span></div>' +
+      '<h2 class="prompt">' + q.prompt + '</h2>' + body + '</section>';
+  }
+  function tablet(latin, lbl) {
+    return '<div class="tablet"><span class="lbl">' + (lbl || 'Textus') + '</span><p class="latin-line">' + latin.replace('____', '<span class="gap">____</span>') + '</p></div>';
+  }
+  function viewMC(q) {
+    const ui = state.ui;
+    if (!ui.order) ui.order = shuffle(q.options.map((_, i) => i));
+    const fb = state.phase === 'feedback';
+    const two = q.options.every(o => o.length <= 24);
+    const opts = ui.order.map((oi, k) => {
+      let cls = 'opt' + (q.latinOptions ? ' latin' : '');
+      if (fb) {
+        if (oi === q.answer) cls += ' is-ok';
+        else if (oi === ui.sel) cls += ' is-bad';
+        else cls += ' is-dim';
+      } else if (oi === ui.sel) cls += ' is-selected';
+      return '<button class="' + cls + '" type="button" data-action="mc" data-i="' + oi + '"' + (fb ? ' disabled' : '') + ' aria-pressed="' + (oi === ui.sel) + '">' +
+        '<span class="opt-key">' + (k + 1) + '</span><span class="opt-text">' + q.options[oi] + '</span></button>';
+    }).join('');
+    return tablet(q.latin) + '<div class="opts' + (two ? ' two' : '') + '" role="group" aria-label="Opciones">' + opts + '</div>';
+  }
+  function viewFill(q) {
+    const ui = state.ui, fb = state.phase === 'feedback';
+    if (!ui.fills) ui.fills = q.answers.map(() => null);
+    if (!ui.bankOrder) ui.bankOrder = shuffle(q.bank.map((_, i) => i));
+    let slot = 0;
+    const sentence = q.parts.map(p => {
+      if (p !== '_') return '<span>' + p + '</span>';
+      const i = slot++, bi = ui.fills[i];
+      let cls = 'slot';
+      if (fb) cls += (bi != null && q.bank[bi] === q.answers[i]) ? ' is-ok' : ' is-bad';
+      else if (bi == null) cls += ' is-empty';
+      const label = bi == null ? 'Hueco vacío' : 'Quitar ' + q.bank[bi];
+      return '<button class="' + cls + '" type="button" data-action="slot" data-i="' + i + '" aria-label="' + label + '"' + (fb || bi == null ? ' disabled' : '') + '>' + (bi == null ? '&nbsp;' : q.bank[bi]) + '</button>';
+    }).join('');
+    const used = new Set(ui.fills.filter(x => x != null));
+    const bank = ui.bankOrder.map(bi => '<button class="tile' + (used.has(bi) ? ' is-used' : '') + '" type="button" data-action="bank" data-i="' + bi + '"' + (used.has(bi) || fb ? ' disabled' : '') + '>' + q.bank[bi] + '</button>').join('');
+    return '<div class="tablet"><span class="lbl">Textus</span><p class="latin-line">' + sentence + '</p>' + (q.gloss ? '<p class="gloss">' + q.gloss + '</p>' : '') + '</div>' +
+      '<div><span class="match-hint">Banco de desinencias: toca una para colocarla en el hueco.</span><div class="bank" role="group" aria-label="Banco de palabras">' + bank + '</div></div>';
+  }
+  function viewMatch(q) {
+    const ui = state.ui, fb = state.phase === 'feedback';
+    if (!ui.rightOrder) ui.rightOrder = shuffle(q.pairs.map((_, i) => i));
+    if (!ui.pairs) ui.pairs = {};
+    const r2l = {};
+    Object.keys(ui.pairs).forEach(l => { r2l[ui.pairs[l]] = +l; });
+    const left = q.pairs.map((p, i) => {
+      const paired = ui.pairs[i] != null;
+      let cls = 'mitem left';
+      if (fb) cls += ui.pairs[i] === i ? ' is-ok' : ' is-bad';
+      else if (ui.leftSel === i) cls += ' is-active';
+      if (paired) cls += ' paired c' + i;
+      return '<button class="' + cls + '" type="button" data-action="left" data-i="' + i + '"' + (fb ? ' disabled' : '') + '><span class="badge">' + (paired ? ROMAN[i] : '') + '</span><span>' + p[0] + '</span></button>';
+    }).join('');
+    const right = ui.rightOrder.map(ri => {
+      const l = r2l[ri];
+      const paired = l != null;
+      let cls = 'mitem right';
+      if (fb) cls += l === ri ? ' is-ok' : ' is-bad';
+      else if (ui.rightSel === ri) cls += ' is-active';
+      if (paired) cls += ' paired c' + l;
+      return '<button class="' + cls + '" type="button" data-action="right" data-i="' + ri + '"' + (fb ? ' disabled' : '') + '><span class="badge">' + (paired ? ROMAN[l] : '') + '</span><span>' + q.pairs[ri][1] + '</span></button>';
+    }).join('');
+    const hint = fb ? '' : '<p class="match-hint">Toca un término latino y después su análisis. Toca un par ya formado para deshacerlo.</p>';
+    return hint + '<div class="match"><div class="match-col"><span class="col-lbl">Latīnē</span>' + left + '</div><div class="match-col"><span class="col-lbl">Casus / análisis</span>' + right + '</div></div>';
+  }
+  function viewType(q) {
+    const ui = state.ui, fb = state.phase === 'feedback';
+    let cls = 'type-input';
+    if (fb) cls += state.lastResult.status === 'correct' ? ' is-ok' : state.lastResult.status === 'near' ? ' is-near' : ' is-bad';
+    return tablet(q.latin) + (q.hint ? '<p class="gloss" style="margin-top:-.4rem">' + q.hint + '</p>' : '') +
+      '<label for="typeInput" class="sr-only">Tu respuesta en latín</label>' +
+      '<input id="typeInput" class="' + cls + '" type="text" inputmode="text" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="Scrībe hīc…" value="' + esc(ui.typed || '') + '"' + (fb ? ' disabled' : '') + '>' +
+      '<p class="type-help">Usa el teclado de macrones de abajo o escribe la vocal seguida de <kbd>=</kbd> (a= → ā).</p>';
+  }
+
+  /* =========================================================
+     GENERADOR DE PARADIGMAS (preguntas que no se repiten)
+     ========================================================= */
+  function declOf(lemma) { if (lemma.endsWith('us')) return 'm'; if (lemma.endsWith('um')) return 'n'; return 'f'; }
+  function formOf(w, c, n) {
+    const d = declOf(w.lemma);
+    return w.lemma.slice(0, d === 'f' ? -1 : -2) + ENDINGS[d][c][n];
+  }
+  function labelOf(key) { const c = key.slice(0, 3), n = +key[3]; return CASES[c].charAt(0).toUpperCase() + CASES[c].slice(1) + ' ' + NUMS[n]; }
+  function paradigmLine(w, cases) {
+    return cases.map(c => CASES[c].slice(0, 3) + '. ' + formOf(w, c, 0) + ' / ' + formOf(w, c, 1)).join(' · ');
+  }
+  function generateQuestion(mi, used, onlyMC) {
+    const cases = TAUGHT[mi];
+    let w, c, n, form, tries = 0;
+    do {
+      w = pick(LEXICON); c = pick(cases); n = Math.random() < 0.5 ? 0 : 1; form = formOf(w, c, n); tries++;
+    } while (used && used.has(w.lemma) && tries < 40);
+    if (used) used.add(w.lemma);
+    const d = declOf(w.lemma), key = c + n;
+    const valid = [];
+    cases.forEach(cc => [0, 1].forEach(nn => { if (formOf(w, cc, nn) === form) valid.push(cc + nn); }));
+    const others = valid.filter(k => k !== key);
+    const ambig = others.length ? ' Atención: <i class="la">' + form + '</i> también puede ser ' + others.map(k => labelOf(k).toLowerCase()).join(' o ') + '; el contexto decide.' : '';
+    const explain = '<i class="la">' + w.lemma + '</i> («' + w.es + '»), ' + DECL_LABEL[d] + ': ' + CASES[c] + ' ' + NUMS[n] + ' en <b>-' + ENDINGS[d][c][n] + '</b> → <i class="la">' + form + '</i>.' + ambig +
+      '<span class="para la">' + paradigmLine(w, cases) + '</span>';
+    const base = { generated: true, tag: 'Paradigma', kind: 'morph', explain: explain };
+    const mode = onlyMC ? pick(['produce', 'identify']) : pick(['type', 'produce', 'identify']);
+    if (mode === 'type') {
+      return Object.assign(base, {
+        type: 'type', prompt: 'Escribe el ' + CASES[c] + ' ' + NUMS[n] + ' de «' + w.lemma + '».',
+        latin: w.lemma + ' → ____', hint: '«' + w.es + '» · ' + DECL_LABEL[d], answers: [form]
+      });
+    }
+    if (mode === 'produce') {
+      const all = [];
+      ['nom', 'gen', 'acc', 'abl'].forEach(cc => [0, 1].forEach(nn => { const f = formOf(w, cc, nn); if (f !== form && !all.includes(f)) all.push(f); }));
+      const taughtForms = all.filter(f => cases.some(cc => [0, 1].some(nn => formOf(w, cc, nn) === f)));
+      let distract = shuffle(taughtForms).slice(0, 3);
+      if (distract.length < 3) distract = distract.concat(shuffle(all.filter(f => !distract.includes(f))).slice(0, 3 - distract.length));
+      return Object.assign(base, {
+        type: 'mc', latinOptions: true, prompt: '¿Cuál es el ' + CASES[c] + ' ' + NUMS[n] + ' de «' + w.lemma + '»?',
+        latin: w.lemma + ' · «' + w.es + '»', options: [form].concat(distract), answer: 0
+      });
+    }
+    const keys = [];
+    cases.forEach(cc => [0, 1].forEach(nn => keys.push(cc + nn)));
+    const distract = shuffle(keys.filter(k => !valid.includes(k))).slice(0, 3);
+    return Object.assign(base, {
+      type: 'mc', prompt: '¿Qué caso y número puede ser «' + form + '»?',
+      latin: form + ' · de ' + w.lemma, options: [labelOf(key)].concat(distract.map(labelOf)), answer: 0
+    });
+  }
+
+  /* Selección de la sesión: falladas → no vistas → vistas hace más tiempo */
+  function tierOf(q) { return state.missed[q.id] ? 0 : state.seen[q.id] == null ? 1 : 2; }
+  function buildSession(mi) {
+    state.sessionNo++;
+    const bank = MODULES[mi].questions;
+    const ordered = shuffle(bank).sort((a, b) => tierOf(a) - tierOf(b) || ((state.seen[a.id] || 0) - (state.seen[b.id] || 0)));
+    const picked = [];
+    ordered.filter(q => tierOf(q) === 0).slice(0, 2).forEach(q => picked.push(q));
+    ['fill', 'match', 'type', 'mc'].forEach(t => {
+      if (picked.length >= SESSION_CURATED || picked.some(p => p.type === t)) return;
+      const c = ordered.find(q => q.type === t && !picked.includes(q) && tierOf(q) < 2);
+      if (c) picked.push(c);
+    });
+    for (const q of ordered) { if (picked.length >= SESSION_CURATED) break; if (!picked.includes(q)) picked.push(q); }
+    picked.forEach(q => { state.seen[q.id] = state.sessionNo; });
+    const used = new Set();
+    const gens = [];
+    for (let k = 0; k < SESSION_GENERATED; k++) gens.push(generateQuestion(mi, used, false));
+    return shuffle(picked.concat(gens));
+  }
+  function bankStats(mi) {
+    const bank = MODULES[mi].questions;
+    return {
+      total: bank.length,
+      seen: bank.filter(q => state.seen[q.id] != null).length,
+      missed: bank.filter(q => state.missed[q.id]).length
+    };
+  }
+
+  /* =========================================================
+     LÓGICA DE LA LECCIÓN
+     ========================================================= */
+  function startModule(i) {
+    state.currentModuleIndex = i;
+    state.currentQuestionIndex = 0;
+    state.queue = buildSession(i).map((q, k) => ({ q: q, key: k, retry: false }));
+    state.done = 0;
+    state.total = state.queue.length;
+    if (state.lives <= 0) state.lives = 5;
+    state.stats = { correct: 0, near: 0, wrong: 0, xpStart: state.xp, rankStart: rankIndex(state.xp), maxStreak: state.streak, bonus: [] };
+    state.phase = 'question';
+    state.ui = {};
+    state.lastResult = null;
+    state.lectioOpen = true;
+    state.screen = 'lesson';
+    sfx('tap');
+    render();
+    window.scrollTo({ top: 0 });
+  }
+  function canCheck() {
+    const item = cur(); if (!item) return false;
+    const q = item.q, ui = state.ui;
+    if (q.type === 'mc') return ui.sel != null;
+    if (q.type === 'fill') return !!ui.fills && ui.fills.every(x => x != null);
+    if (q.type === 'match') return !!ui.pairs && Object.keys(ui.pairs).length === q.pairs.length;
+    if (q.type === 'type') return !!(ui.typed && ui.typed.trim());
+    return false;
+  }
+  function evaluate(q) {
+    const ui = state.ui;
+    if (q.type === 'mc') return ui.sel === q.answer ? 'correct' : 'wrong';
+    if (q.type === 'fill') return q.answers.every((a, i) => q.bank[ui.fills[i]] === a) ? 'correct' : 'wrong';
+    if (q.type === 'match') return q.pairs.every((_, i) => ui.pairs[i] === i) ? 'correct' : 'wrong';
+    if (q.type === 'type') {
+      const t = norm(ui.typed || '');
+      if (q.answers.some(a => norm(a) === t)) return 'correct';
+      if (q.answers.some(a => stripMarks(norm(a)) === stripMarks(t))) return 'near';
+      return 'wrong';
+    }
+    return 'wrong';
+  }
+  function correctAnswerHTML(q) {
+    if (q.type === 'mc') return '<span class="' + (q.latinOptions ? 'la' : '') + '">' + q.options[q.answer] + '</span>';
+    if (q.type === 'fill') { let k = 0; return '<span class="la">' + q.parts.map(p => p === '_' ? '<u>' + q.answers[k++] + '</u>' : p).join('') + '</span>'; }
+    if (q.type === 'match') return q.pairs.map(p => '<span class="la">' + p[0] + '</span> → ' + p[1]).join(' · ');
+    if (q.type === 'type') return '<span class="la">' + q.answers[0] + '</span>';
+    return '';
+  }
+  function check() {
+    if (state.phase !== 'question' || !canCheck()) return;
+    const item = cur(), q = item.q;
+    const status = evaluate(q);
+    const prevLives = state.lives;
+    let gain = 0;
+    if (status === 'correct') {
+      state.streak++;
+      gain = 10 + (state.streak >= 3 ? 5 : 0);
+      state.stats.correct++;
+      state.done++;
+      sfx('ok');
+    } else if (status === 'near') {
+      gain = 5;
+      state.stats.near++;
+      state.done++;
+      sfx('near');
+    } else {
+      state.streak = 0;
+      state.lives = Math.max(0, state.lives - 1);
+      state.stats.wrong++;
+      state.queue.push({ q: q, key: item.key, retry: true });
+      sfx('err');
+    }
+    if (q.id) {
+      if (status === 'wrong') state.missed[q.id] = true;
+      else if (!item.retry) delete state.missed[q.id];
+    }
+    state.stats.maxStreak = Math.max(state.stats.maxStreak, state.streak);
+    if (gain) { state.xp += gain; floatXP(gain); }
+    state.lastResult = { status: status, gain: gain, q: q };
+    state.phase = 'feedback';
+    save();
+    renderChallenge();
+    updateHeader(prevLives);
+  }
+  function next() {
+    if (state.phase !== 'feedback') return;
+    if (state.lives <= 0) { startTribunal(); return; }
+    advance();
+  }
+  function advance() {
+    state.currentQuestionIndex++;
+    if (state.lectioOpen && window.innerWidth < 768) state.lectioOpen = false;
+    if (state.currentQuestionIndex >= state.queue.length) { finishModule(); return; }
+    state.phase = 'question';
+    state.ui = {};
+    state.lastResult = null;
+    if (state.screen !== 'lesson') { state.screen = 'lesson'; render(); }
+    else {
+      const body = $('#lectioBody');
+      if (body) body.classList.toggle('collapsed', !state.lectioOpen);
+      const head = $('.lectio-head');
+      if (head) head.setAttribute('aria-expanded', state.lectioOpen);
+      renderChallenge();
+    }
+    if (window.innerWidth < 768) { const c = $('#challenge'); if (c) c.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+  }
+  function finishModule() {
+    const i = state.currentModuleIndex, st = state.stats;
+    let bonus = 20;
+    const lines = ['+20 XP por completar el capítulo'];
+    if (st.wrong === 0 && st.near === 0) { bonus += 10; lines.push('+10 XP <i class="la">sine errōre</i> (sin errores)'); }
+    state.xp += bonus;
+    const attempts = st.correct + st.near + st.wrong;
+    const acc = attempts ? Math.round((st.correct + st.near * 0.5) / attempts * 100) : 100;
+    const lifeBack = state.lives < 5;
+    state.lives = Math.min(5, state.lives + 1);
+    if (lifeBack) lines.push('+1 <i class="la">vīta</i> de premio');
+    if (!state.completed.includes(i)) state.completed.push(i);
+    state.unlocked = Math.max(state.unlocked, Math.min(MODULES.length, i + 2));
+    state.best[i] = Math.max(state.best[i] || 0, acc);
+    const bs = bankStats(i);
+    lines.push('Banco del capítulo: ' + bs.seen + ' de ' + bs.total + ' preguntas vistas' + (bs.missed ? ' · ' + bs.missed + ' volverán en tu próxima sesión para repasarlas' : ''));
+    const rankEnd = rankIndex(state.xp);
+    state.victory = {
+      i: i, correct: st.correct, near: st.near, wrong: st.wrong, acc: acc,
+      xpGained: state.xp - st.xpStart, maxStreak: st.maxStreak, lives: state.lives,
+      promoted: rankEnd > st.rankStart ? RANKS[rankEnd] : null, bonusLines: lines
+    };
+    state.screen = 'victory';
+    save();
+    sfx('win');
+    render();
+    floatXP(bonus);
+    window.scrollTo({ top: 0 });
+  }
+
+  /* =========================================================
+     VISTA: VICTORIA
+     ========================================================= */
+  function viewVictory() {
+    const v = state.victory, m = MODULES[v.i];
+    const last = v.i === MODULES.length - 1;
+    const promo = v.promoted ? '<div class="promo">' + LAUREL + '<div><span class="eyebrow" style="color:var(--gold)">Novus gradus</span><div class="name">' + v.promoted.name + '</div><div style="font-size:.85rem">Ahora eres ' + v.promoted.es + '.</div></div></div>' : '';
+    const stat = (k, es, val, gold) => '<div class="stat' + (gold ? ' gold' : '') + '"><div class="k">' + k + ' <span class="es">· ' + es + '</span></div><div class="v">' + val + '</div></div>';
+    const nextBtn = last
+      ? '<button class="btn btn-gold" type="button" data-action="go-map">Cursum perfēcistī · Ver mapa</button>'
+      : '<button class="btn btn-primary" type="button" data-action="start" data-i="' + (v.i + 1) + '">Capitulum ' + MODULES[v.i + 1].numeral + ' · Pergere</button>';
+    return '<div class="wrap narrow"><div class="card center-card">' +
+      '<div class="victory-head">' +
+        '<div class="wreath">' + LAUREL + '<span class="num">' + m.numeral + '</span></div>' +
+        '<p class="eyebrow">' + m.capitulum + ' perfectum</p>' +
+        '<h1 class="display">Victōria!</h1>' +
+        '<p class="la" style="font-size:1.15rem;color:var(--ink-2)">' + m.title + '</p>' +
+      '</div>' + promo +
+      '<div class="stat-grid">' +
+        stat('Rēctē', 'aciertos', v.correct + (v.near ? ' <span style="font-size:1rem;color:var(--amber-700)">+' + v.near + ' ferē</span>' : '')) +
+        stat('Errāta', 'errores', v.wrong) +
+        stat('Accūrātiō', 'precisión', v.acc + '%') +
+        stat('XP', 'ganada', '+' + v.xpGained, true) +
+        stat('Seriēs maxima', 'mejor racha', v.maxStreak) +
+        stat('Vītae', 'vidas', v.lives + ' / 5') +
+      '</div>' +
+      '<div class="bonus">' + v.bonusLines.map(l => '<span>' + l + '</span>').join('') + '</div>' +
+      '<div class="actions"><button class="btn btn-ghost" type="button" data-action="go-map">Cursus Honōrum</button>' + nextBtn + '</div>' +
+    '</div></div>';
+  }
+
+  /* =========================================================
+     TRIBŪNAL DĒ RECUPERĀTIŌNE
+     ========================================================= */
+  function startTribunal() {
+    let fresh = TRIBUNAL_POOL.filter(t => !state.tribSeen.includes(t.id));
+    if (fresh.length < 2) { state.tribSeen = []; fresh = TRIBUNAL_POOL.slice(); }
+    const drawn = shuffle(fresh).slice(0, 2);
+    drawn.forEach(t => state.tribSeen.push(t.id));
+    const g = generateQuestion(state.currentModuleIndex, null, true);
+    drawn.push({ q: g.prompt, latin: !!g.latinOptions, options: g.options, answer: g.answer, explain: g.explain });
+    save();
+    const qs = shuffle(drawn).map(t => Object.assign({}, t, { order: shuffle(t.options.map((_, i) => i)) }));
+    state.tribunal = { qs: qs, i: 0, correct: 0, answered: null, results: [], verdict: null };
+    state.screen = 'tribunal';
+    sfx('gavel');
+    render();
+    window.scrollTo({ top: 0 });
+  }
+  function viewTribunal() {
+    const t = state.tribunal;
+    const dots = [0, 1, 2].map(k => {
+      const r = t.results[k];
+      const cls = r === true ? 'ok' : r === false ? 'bad' : k === t.i && !t.verdict ? 'now' : '';
+      return '<span class="' + cls + '">' + ROMAN[k] + '</span>';
+    }).join('');
+    const head = '<div class="tribunal-head">' + ICON.scales + '<div><p class="eyebrow" style="color:var(--gold)">Iūdicium</p><h1>Tribūnal dē Recuperātiōne</h1>' +
+      '<p>Has agotado tus <i class="la">vītae</i>. Responde tres preguntas rápidas: con dos aciertos quedas absuelto y recuperas tres vidas.</p></div></div>';
+    let body = '';
+    if (t.verdict === 'abs') {
+      body = '<div class="verdict abs"><div class="wreath" style="width:110px;height:110px">' + LAUREL + '</div><h2 class="la">Absolūtus!</h2>' +
+        '<p>Acertaste ' + t.correct + ' de 3. El tribunal te devuelve <b>3 <i class="la">vītae</i></b>.</p></div>' +
+        '<div class="actions"><button class="btn btn-primary" type="button" data-action="trib-resume">Pergere · Volver a la lección</button></div>';
+    } else if (t.verdict === 'dam') {
+      body = '<div class="verdict dam"><h2 class="la">Damnātus</h2><p>Acertaste ' + t.correct + ' de 3; necesitas dos. Puedes pedir un nuevo juicio o repetir el capítulo desde el principio.</p></div>' +
+        '<div class="actions"><button class="btn btn-primary" type="button" data-action="trib-retry">Novum iūdicium</button>' +
+        '<button class="btn btn-ghost" type="button" data-action="restart">Capitulum dē integrō</button>' +
+        '<button class="btn btn-ghost" type="button" data-action="go-map">Cursus Honōrum</button></div>';
+    } else {
+      const q = t.qs[t.i];
+      const opts = q.order.map((oi, k) => {
+        let cls = 'opt' + (q.latin ? ' latin' : '');
+        if (t.answered != null) {
+          if (oi === q.answer) cls += ' is-ok';
+          else if (oi === t.answered) cls += ' is-bad';
+          else cls += ' is-dim';
+        }
+        return '<button class="' + cls + '" type="button" data-action="trib" data-i="' + oi + '"' + (t.answered != null ? ' disabled' : '') + '><span class="opt-key">' + (k + 1) + '</span><span class="opt-text">' + q.options[oi] + '</span></button>';
+      }).join('');
+      body = '<div class="q-top"><span class="tag tag-ius">Quaestiō ' + ROMAN[t.i] + '</span><span class="qcount">' + (t.i + 1) + ' / 3</span></div>' +
+        '<h2 class="prompt' + (q.latin ? ' la' : '') + '">' + q.q + '</h2>' +
+        '<div class="opts' + (q.options.every(o => o.length <= 24) ? ' two' : '') + '">' + opts + '</div>' +
+        (t.answered != null
+          ? '<p class="trib-explain"><b>' + (t.answered === q.answer ? 'Rēctē.' : 'Nōn rēctē.') + '</b> ' + q.explain + '</p>' +
+            '<div class="actions"><button class="btn btn-primary" type="button" data-action="trib-next">' + (t.i < 2 ? 'Sequēns · Siguiente' : 'Sententia · Veredicto') + '</button></div>'
+          : '');
+    }
+    return '<div class="wrap narrow" style="display:grid;gap:1rem">' + head +
+      '<div class="card center-card"><div class="dots" aria-label="Preguntas del tribunal">' + dots + '</div>' + body + '</div></div>';
+  }
+  function tribAnswer(oi) {
+    const t = state.tribunal;
+    if (t.answered != null || t.verdict) return;
+    const q = t.qs[t.i];
+    t.answered = oi;
+    const ok = oi === q.answer;
+    t.results[t.i] = ok;
+    if (ok) { t.correct++; sfx('ok'); } else sfx('err');
+    render();
+  }
+  function tribNext() {
+    const t = state.tribunal;
+    if (t.answered == null) return;
+    if (t.i < 2) { t.i++; t.answered = null; render(); return; }
+    t.verdict = t.correct >= 2 ? 'abs' : 'dam';
+    if (t.verdict === 'abs') { state.lives = 3; save(); sfx('win'); } else sfx('gavel');
+    render();
+  }
+
+  /* =========================================================
+     THĒSAURUS: banco de preguntas consultable
+     ========================================================= */
+  function plain(s) { return stripMarks(String(s || '').replace(/<[^>]+>/g, ' ')).toLowerCase(); }
+  function qText(q) {
+    return plain([q.prompt, q.q, q.latin, (q.parts || []).join(''), (q.options || []).join(' '),
+      (q.pairs || []).map(p => p.join(' ')).join(' '), (q.answers || []).join(' '), q.explain].join(' '));
+  }
+  function viewThesaurus() {
+    const tabs = MODULES.map((m, i) => ({ id: String(i), label: 'Cap. ' + m.numeral, n: m.questions.length }))
+      .concat([{ id: 'trib', label: 'Tribūnal', n: TRIBUNAL_POOL.length }, { id: 'voc', label: 'Vocābulārium', n: LEXICON.length }]);
+    const seg = tabs.map(t => '<button class="seg-btn" type="button" role="tab" data-action="thes-tab" data-tab="' + t.id + '" aria-selected="' + (state.thesTab === t.id) + '">' + t.label + ' <span class="n">' + t.n + '</span></button>').join('');
+    return '<div class="wrap">' +
+      '<section class="hero">' +
+        '<p class="eyebrow">Thēsaurus quaestiōnum</p>' +
+        '<h1 class="display">Banco de preguntas</h1>' +
+        '<p class="lede">Todas las preguntas del curso con su respuesta y su explicación. Intenta responder antes de abrir el <i class="la">respōnsum</i>. Las marcadas como <b>repetenda</b> son las que fallaste: volverán en tu próxima sesión.</p>' +
+        '<div class="hero-actions"><button class="btn btn-ghost btn-sm" type="button" data-action="go-map">Volver al Cursus Honōrum</button></div>' +
+      '</section>' +
+      '<div class="thes-bar"><div class="seg" role="tablist" aria-label="Secciones del banco">' + seg + '</div>' +
+        '<label class="search"><span class="sr-only">Buscar en el banco</span><input id="thesQuery" type="search" autocomplete="off" spellcheck="false" placeholder="Buscar: genitivo, pacta, ancilla… (con o sin macrones)" value="' + esc(state.thesQuery) + '"></label></div>' +
+      '<div id="thesList" class="thes-list">' + thesListHTML() + '</div></div>';
+  }
+  function thesListHTML() {
+    const query = plain(state.thesQuery).trim();
+    const tab = state.thesTab;
+    if (tab === 'voc') return vocabHTML(query);
+    const isTrib = tab === 'trib';
+    let items = isTrib ? TRIBUNAL_POOL : MODULES[+tab].questions;
+    const total = items.length;
+    if (query) items = items.filter(q => qText(q).includes(query));
+    let summary;
+    if (isTrib) summary = total + ' preguntas rápidas. El tribunal toma 2 que aún no te hayan salido y genera 1 de declinación.';
+    else { const bs = bankStats(+tab); summary = MODULES[+tab].title + ': ' + bs.seen + ' de ' + bs.total + ' vistas' + (bs.missed ? ' · ' + bs.missed + ' por repasar' : '') + '. Además, cada sesión genera ' + SESSION_GENERATED + ' ejercicios de declinación con el Vocābulārium.'; }
+    const head = '<p class="thes-summary">' + summary + (query ? ' Coinciden ' + items.length + '.' : '') + '</p>';
+    if (!items.length) return head + '<p class="muted thes-empty">Ninguna pregunta coincide con «' + esc(state.thesQuery) + '». Prueba con otra palabra.</p>';
+    return head + items.map(q => isTrib ? tribCard(q) : qCard(q)).join('');
+  }
+  function stemOf(q) {
+    if (q.type === 'fill') return q.parts.map(p => p === '_' ? '<span class="blank">___</span>' : p).join('');
+    if (q.type === 'match') return q.pairs.map(p => p[0]).join(' · ');
+    return (q.latin || '').replace('____', '<span class="blank">___</span>');
+  }
+  const TYPE_LABEL = { mc: 'Opción múltiple', fill: 'Completar', match: 'Relacionar', type: 'Escribir' };
+  function qCard(q) {
+    const st = state.missed[q.id] ? ['rep', 'Repetenda · por repasar'] : state.seen[q.id] != null ? ['vis', 'Vīsa'] : ['nov', 'Nōndum vīsa'];
+    return '<article class="entry card">' +
+      '<div class="q-top"><span class="tag tag-' + q.kind + '">' + q.tag + '</span><span class="st st-' + st[0] + '">' + st[1] + '</span><span class="qcount">' + TYPE_LABEL[q.type] + '</span></div>' +
+      '<h3 class="entry-q">' + q.prompt + '</h3>' +
+      '<p class="entry-la la">' + stemOf(q) + '</p>' +
+      (q.type === 'mc' ? '<ol class="entry-opts">' + sortedOpts(q.options).map(o => '<li' + (q.latinOptions ? ' class="la"' : '') + '>' + o + '</li>').join('') + '</ol>' : '') +
+      '<details><summary>Respōnsum · ver respuesta</summary><p class="entry-a">' + correctAnswerHTML(q) + '</p><p class="entry-x">' + q.explain + '</p></details>' +
+    '</article>';
+  }
+  function sortedOpts(o) { return o.slice().sort((a, b) => stripMarks(a).localeCompare(stripMarks(b), 'es')); }
+  function tribCard(t) {
+    const st = state.tribSeen.includes(t.id) ? ['vis', 'Vīsa'] : ['nov', 'Nōndum vīsa'];
+    return '<article class="entry card">' +
+      '<div class="q-top"><span class="tag tag-ius">Tribūnal</span><span class="st st-' + st[0] + '">' + st[1] + '</span></div>' +
+      '<h3 class="entry-q' + (t.latin ? ' la' : '') + '">' + t.q + '</h3>' +
+      '<ol class="entry-opts">' + sortedOpts(t.options).map(o => '<li' + (t.latin ? ' class="la"' : '') + '>' + o + '</li>').join('') + '</ol>' +
+      '<details><summary>Respōnsum · ver respuesta</summary><p class="entry-a"><span class="' + (t.latin ? 'la' : '') + '">' + t.options[t.answer] + '</span></p><p class="entry-x">' + t.explain + '</p></details>' +
+    '</article>';
+  }
+  function vocabHTML(query) {
+    let words = LEXICON;
+    if (query) words = words.filter(w => plain(w.lemma + ' ' + w.es).includes(query));
+    const rows = words.map(w => {
+      const d = declOf(w.lemma);
+      return '<tr><th scope="row" class="la">' + w.lemma + '</th><td>' + w.es + '</td><td class="dl">' + DECL_LABEL[d] + '</td>' +
+        ['nom', 'gen', 'acc', 'abl'].map(c => '<td class="la">' + formOf(w, c, 0) + '<br><span class="pl">' + formOf(w, c, 1) + '</span></td>').join('') + '</tr>';
+    }).join('');
+    return '<p class="thes-summary">' + LEXICON.length + ' sustantivos de la 1.ª y 2.ª declinación. Con ellos se generan los ejercicios de paradigma, así que casi nunca verás dos iguales. Arriba el singular, abajo el plural.</p>' +
+      (words.length
+        ? '<div class="voc-wrap card"><table class="decl voc"><thead><tr><th scope="col">Lemma</th><th scope="col">Significado</th><th scope="col">Declinación</th><th scope="col">Nōm.</th><th scope="col">Gen.</th><th scope="col">Acc.</th><th scope="col">Abl.</th></tr></thead><tbody>' + rows + '</tbody></table></div>'
+        : '<p class="muted thes-empty">Ninguna palabra coincide con «' + esc(state.thesQuery) + '».</p>');
+  }
+
+  /* =========================================================
+     BARRA DE COMPROBACIÓN Y TECLADO
+     ========================================================= */
+  function updateCheckbar() {
+    const bar = $('#checkbar'), btn = $('#btnCheck');
+    if (state.screen !== 'lesson') return;
+    if (state.phase === 'question') {
+      bar.dataset.state = 'idle';
+      $('#fb').hidden = true;
+      $('#fbHint').hidden = false;
+      btn.textContent = 'Probāre · Comprobar';
+      btn.className = 'btn btn-primary btn-check';
+      btn.disabled = !canCheck();
+    } else {
+      const r = state.lastResult, q = r.q;
+      bar.dataset.state = r.status;
+      $('#fb').hidden = false;
+      $('#fbHint').hidden = true;
+      $('#fbIcon').innerHTML = r.status === 'correct' ? ICON.check : r.status === 'near' ? ICON.tilde : ICON.cross;
+      if (r.status === 'correct') {
+        $('#fbTitle').innerHTML = '<span class="la">' + pick(PRAISE) + '</span> +' + r.gain + ' XP';
+        $('#fbAnswer').innerHTML = q.type === 'mc' ? '' : correctAnswerHTML(q);
+        $('#fbExplain').innerHTML = q.explain;
+      } else if (r.status === 'near') {
+        $('#fbTitle').innerHTML = '<span class="la">Ferē rēctē</span> · +' + r.gain + ' XP';
+        $('#fbAnswer').innerHTML = 'Se escribe: ' + correctAnswerHTML(q);
+        $('#fbExplain').innerHTML = 'Acertaste la palabra, pero no la cantidad vocálica. En latín la vocal larga cambia el caso: <i class="la">rosa</i> (nominativo) ≠ <i class="la">rosā</i> (ablativo). ' + q.explain;
+      } else {
+        $('#fbTitle').innerHTML = '<span class="la">' + pick(BLAME) + '</span>' + (state.lives <= 0 ? ' · sin vidas' : '');
+        $('#fbAnswer').innerHTML = 'Respuesta correcta: ' + correctAnswerHTML(q);
+        $('#fbExplain').innerHTML = q.explain + (state.lives <= 0 ? ' <b>Al continuar comparecerás ante el Tribūnal dē Recuperātiōne.</b>' : ' Esta pregunta volverá al final de la lección.');
+      }
+      btn.textContent = state.lives <= 0 ? 'Ad tribūnal · Continuar' : 'Pergere · Continuar';
+      btn.className = 'btn btn-check btn-' + r.status;
+      btn.disabled = false;
+    }
+    syncLayout();
+  }
+  function updateKeyboard() {
+    const item = cur();
+    const show = state.screen === 'lesson' && state.phase === 'question' && item && item.q.type === 'type';
+    $('#macronKb').hidden = !show;
+    document.body.classList.toggle('kb-on', !!show);
+    const sh = $('#macronKb .shift');
+    sh.setAttribute('aria-pressed', state.shift);
+    document.querySelectorAll('#macronKb .kb-key[data-key]').forEach(b => {
+      const k = b.dataset.key; if (k === 'shift') return;
+      b.textContent = state.shift ? k.toUpperCase() : k.toLowerCase();
+    });
+  }
+  function insertMacron(ch) {
+    const inp = $('#typeInput');
+    if (!inp || inp.disabled) return;
+    const s = inp.selectionStart != null ? inp.selectionStart : inp.value.length;
+    const e = inp.selectionEnd != null ? inp.selectionEnd : s;
+    inp.value = inp.value.slice(0, s) + ch + inp.value.slice(e);
+    inp.setSelectionRange(s + ch.length, s + ch.length);
+    inp.focus();
+    onTyped(inp);
+    sfx('tap');
+  }
+  function onTyped(inp) {
+    const before = inp.value;
+    const pos = inp.selectionStart;
+    const after = before.replace(/([aeiouAEIOU])=/g, (_, v) => MACRON[v]);
+    if (after !== before) {
+      inp.value = after;
+      const np = Math.max(0, pos - (before.length - after.length));
+      inp.setSelectionRange(np, np);
+    }
+    state.ui.typed = inp.value;
+    $('#btnCheck').disabled = !canCheck();
+  }
+
+  /* =========================================================
+     EVENTOS
+     ========================================================= */
+  document.addEventListener('click', function (e) {
+    const a = e.target.closest('[data-action]');
+    if (!a) {
+      if (!e.target.closest('#heartsPop')) closeHearts();
+      return;
+    }
+    const act = a.dataset.action;
+    const i = a.dataset.i != null ? +a.dataset.i : null;
+    if (act !== 'hearts') closeHearts();
+    if (act !== 'reset' && state.resetArmed) state.resetArmed = false;
+    switch (act) {
+      case 'go-map': state.screen = 'map'; state.phase = 'question'; if (state.lives <= 0) state.lives = 5; render(); window.scrollTo({ top: 0 }); break;
+      case 'start': startModule(i); break;
+      case 'restart': state.lives = 5; startModule(state.currentModuleIndex); break;
+      case 'hearts': {
+        const pop = $('#heartsPop'); pop.hidden = !pop.hidden;
+        a.setAttribute('aria-expanded', String(!pop.hidden));
+        break;
+      }
+      case 'sound': state.sound = !state.sound; save(); updateHeader(); if (state.sound) sfx('tap'); break;
+      case 'reset':
+        if (!state.resetArmed) { state.resetArmed = true; render(); setTimeout(() => { if (state.resetArmed) { state.resetArmed = false; if (state.screen === 'map') render(); } }, 4000); }
+        else {
+          state.resetArmed = false; state.xp = 0; state.lives = 5; state.streak = 0; state.unlocked = 1; state.completed = []; state.best = {};
+          state.seen = {}; state.missed = {}; state.sessionNo = 0; state.tribSeen = [];
+          shownXP = 0; save(); render();
+        }
+        break;
+      case 'toggle-lectio': {
+        if (window.innerWidth >= 768) break;
+        state.lectioOpen = !state.lectioOpen;
+        $('#lectioBody').classList.toggle('collapsed', !state.lectioOpen);
+        a.setAttribute('aria-expanded', state.lectioOpen);
+        break;
+      }
+      case 'toggle-versio':
+        state.showVersio = !state.showVersio;
+        $('#lectio').classList.toggle('show-versio', state.showVersio);
+        a.setAttribute('aria-pressed', state.showVersio);
+        break;
+      case 'mc':
+        if (state.phase !== 'question') break;
+        state.ui.sel = i; sfx('tap'); renderChallenge(); break;
+      case 'bank': {
+        if (state.phase !== 'question') break;
+        const k = state.ui.fills.indexOf(null);
+        if (k === -1) break;
+        state.ui.fills[k] = i; sfx('tap'); renderChallenge(); break;
+      }
+      case 'slot':
+        if (state.phase !== 'question') break;
+        state.ui.fills[i] = null; renderChallenge(); break;
+      case 'left': {
+        if (state.phase !== 'question') break;
+        const ui = state.ui;
+        if (ui.rightSel != null) {
+          const owner = Object.keys(ui.pairs).find(l => ui.pairs[l] === ui.rightSel);
+          if (owner != null) delete ui.pairs[owner];
+          ui.pairs[i] = ui.rightSel;
+          ui.rightSel = null;
+          ui.leftSel = null;
+        } else if (ui.pairs[i] != null) { delete ui.pairs[i]; ui.leftSel = i; }
+        else { ui.leftSel = i; ui.rightSel = null; }
+        sfx('tap'); renderChallenge(); break;
+      }
+      case 'right': {
+        if (state.phase !== 'question') break;
+        const ui = state.ui;
+        const owner = Object.keys(ui.pairs).find(l => ui.pairs[l] === i);
+        if (ui.leftSel != null) {
+          if (owner != null) delete ui.pairs[owner];
+          ui.pairs[ui.leftSel] = i;
+          ui.rightSel = null;
+          const free = cur().q.pairs.map((_, k) => k).find(k => ui.pairs[k] == null);
+          ui.leftSel = free != null ? free : null;
+        } else if (owner != null) {
+          delete ui.pairs[owner]; ui.leftSel = +owner;
+        } else {
+          ui.rightSel = i; ui.leftSel = null;
+        }
+        sfx('tap'); renderChallenge(); break;
+      }
+      case 'check':
+        if (state.phase === 'question') check(); else next();
+        break;
+      case 'trib': tribAnswer(i); break;
+      case 'trib-next': tribNext(); break;
+      case 'trib-retry': startTribunal(); break;
+      case 'trib-resume': advance(); break;
+      case 'thes':
+        if (a.dataset.tab != null) state.thesTab = a.dataset.tab;
+        state.screen = 'thesaurus'; render(); window.scrollTo({ top: 0 }); break;
+      case 'thes-tab':
+        state.thesTab = a.dataset.tab; render(); break;
+    }
+  });
+
+  document.addEventListener('input', function (e) {
+    if (e.target && e.target.id === 'typeInput') onTyped(e.target);
+    if (e.target && e.target.id === 'thesQuery') { state.thesQuery = e.target.value; $('#thesList').innerHTML = thesListHTML(); }
+  });
+
+  const kb = $('#macronKb');
+  kb.addEventListener('pointerdown', function (e) { if (e.target.closest('.kb-key')) e.preventDefault(); });
+  kb.addEventListener('mousedown', function (e) { if (e.target.closest('.kb-key')) e.preventDefault(); });
+  kb.addEventListener('click', function (e) {
+    const b = e.target.closest('.kb-key'); if (!b) return;
+    if (b.dataset.key === 'shift') { state.shift = !state.shift; updateKeyboard(); const inp = $('#typeInput'); if (inp) inp.focus(); return; }
+    insertMacron(b.textContent);
+  });
+
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') { closeHearts(); return; }
+    if (state.screen === 'lesson') {
+      if (e.key === 'Enter') {
+        const tag = (e.target.tagName || '').toLowerCase();
+        if (tag === 'button' && e.target.id !== 'btnCheck') return;
+        e.preventDefault();
+        if (state.phase === 'question') check(); else next();
+        return;
+      }
+      const item = cur();
+      if (state.phase === 'question' && item && item.q.type === 'mc' && /^[1-9]$/.test(e.key) && e.target.id !== 'typeInput') {
+        const k = +e.key - 1;
+        if (state.ui.order && k < state.ui.order.length) { state.ui.sel = state.ui.order[k]; sfx('tap'); renderChallenge(); }
+      }
+    } else if (state.screen === 'tribunal') {
+      const t = state.tribunal;
+      if (!t.verdict && t.answered == null && /^[1-9]$/.test(e.key)) {
+        const q = t.qs[t.i], k = +e.key - 1;
+        if (k < q.order.length) tribAnswer(q.order[k]);
+      } else if (e.key === 'Enter' && t.answered != null && !t.verdict) { e.preventDefault(); tribNext(); }
+    }
+  });
+
+  function closeHearts() {
+    const pop = $('#heartsPop');
+    if (!pop.hidden) { pop.hidden = true; $('#heartsBtn').setAttribute('aria-expanded', 'false'); }
+  }
+
+  if (window.ResizeObserver) {
+    const ro = new ResizeObserver(syncLayout);
+    ro.observe($('#topbar'));
+    ro.observe($('#checkbar'));
+  }
+  window.addEventListener('resize', syncLayout);
+
+  /* =========================================================
+     ARRANQUE
+     ========================================================= */
+  load();
+  shownXP = state.xp;
+  render();
+})();
+</script>
+</body>
+</html>
